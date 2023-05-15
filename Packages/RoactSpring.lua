@@ -1,1 +1,1 @@
-return require(script.Parent._Index["chriscerie_roact-spring@0.3.1"]["roact-spring"])
+return require(script.Parent._Index["chriscerie_roact-spring@1.1.5"]["roact-spring"])

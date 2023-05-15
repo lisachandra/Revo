@@ -42,6 +42,7 @@
     "gitlens.blame.highlight.enabled": false,
     "gitlens.codeLens.recentChange.enabled": false,
     "gitlens.codeLens.authors.enabled": false,
+    "luau-lsp.sourcemap.rojoProjectFile": "dev.project.json",
     "luau-lsp.types.definitionFiles": [
         "D:\\Scripts\\utils.d.lua",
         "D:\\Scripts\\unc.d.lua",
