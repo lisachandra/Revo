@@ -32,5 +32,5 @@ jobs:
         shell: bash
         run: |
           rojo sourcemap dev.project.json --output sourcemap.json
-          luau-lsp --no-strict-dm-types --sourcemap=sourcemap.json --definitions=globalTypes.d.lua --definitions=utils.d.lua --definitions=roact.d.lua --definitions=unc.d.lua --definitions=loaded.d.lua --base-luaurc=.luaurc --ignore=Packages/** src/
+          luau-lsp analyze --no-strict-dm-types --sourcemap=sourcemap.json --definitions=globalTypes.d.lua --definitions=utils.d.lua --definitions=roact.d.lua --definitions=unc.d.lua --definitions=loaded.d.lua --base-luaurc=.luaurc --ignore=Packages/** src/
         
