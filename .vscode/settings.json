@@ -46,7 +46,7 @@
         "D:\\Scripts\\utils.d.lua",
         "D:\\Scripts\\unc.d.lua",
         "D:\\Scripts\\roact.d.lua",
-        "D:\\Github\\Packages\\Revo\\loaded.d.lua",
+        "D:\\Github\\Roblox\\Packages\\Revo\\loaded.d.lua"
     ],
     "luau-lsp.diagnostics.workspace": true,
     "editor.unicodeHighlight.nonBasicASCII": false,

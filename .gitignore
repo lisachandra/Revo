@@ -2,6 +2,9 @@
 # Created by https://www.toptal.com/developers/gitignore/api/lua,windows,visualstudiocode
 # Edit at https://www.toptal.com/developers/gitignore?templates=lua,windows,visualstudiocode
 
+wally.lock
+sourcemap.json
+
 ### Lua ###
 # Compiled Lua sources
 luac.out

@@ -7,6 +7,6 @@ realm = "shared"
 [dependencies]
 Roact = "roblox/roact@^1"
 RoactHooks = "kampfkarren/roact-hooks@^0"
-RoactSpring = "chriscerie/roact-spring@^0"
+RoactSpring = "chriscerie/roact-spring@^1"
 Janitor = "howmanysmall/janitor@^1"
-Promise = "evaera/promise@^3"
+Promise = "evaera/promise@^4"

@@ -30,5 +30,7 @@ jobs:
 
       - name: Analyze
         shell: bash
-        run: luau-analyze --project=default.project.json --defs=globalTypes.d.lua --defs=utils.d.lua --defs=roact.d.lua --defs=unc.d.lua --loaded.d.lua src/
+        run: |
+          rojo sourcemap dev.project.json --output sourcemap.json
+          luau-lsp --no-strict-dm-types --sourcemap=sourcemap.json --definitions=globalTypes.d.lua --definitions=utils.d.lua --definitions=roact.d.lua --definitions=unc.d.lua --definitions=loaded.d.lua --base-luaurc=.luaurc --ignore=Packages/** src/
         

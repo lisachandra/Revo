@@ -1,0 +1,10 @@
+{
+  "name": "revo",
+    "tree": {
+    "$path": "Packages",
+
+    "revo": {
+      "$path": "src"
+    }
+  }
+}
