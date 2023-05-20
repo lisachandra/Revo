@@ -40,6 +40,6 @@ jobs:
           rojo sourcemap dev.project.json --output sourcemap.json
           wally-package-types --sourcemap sourcemap.json Packages/
           cat globalTypes.d.lua utils.d.lua roact.d.lua unc.d.lua loaded.d.lua > definitions.d.lua
-          echo definitions.d.lua
+          cat definitions.d.lua
           luau-lsp analyze --no-strict-dm-types --ignore=Packages/** --base-luaurc=.luaurc --sourcemap=sourcemap.json --definitions=definitions.d.lua src/
         
