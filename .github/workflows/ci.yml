@@ -20,9 +20,15 @@ jobs:
           version: "^1.0.1"
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Download defintion files
+      - uses: baptiste0928/cargo-install@v2
+        with:
+          crate: wally-package-types
+          version: "^1"
+
+      - name: Download defintion files & packages
         shell: bash
         run: |
+          wally install
           curl -O https://github.com/JohnnyMorganz/luau-lsp/raw/main/scripts/globalTypes.d.lua
           curl -O https://gist.github.com/zxibs/81fc195db5e0e374c63b98c262b99e1d/raw/9fa3dd6e1d9f65733c1b00fef092ecbf782b8d44/utils.d.lua
           curl -O https://gist.github.com/zxibs/1b861e0123ae548f282b106818202afd/raw/40e4e1e25f3b450c15e933fc6dd5c61192544be1/roact.d.lua
@@ -32,5 +38,6 @@ jobs:
         shell: bash
         run: |
           rojo sourcemap dev.project.json --output sourcemap.json
+          wally-package-types --sourcemap sourcemap.json Packages/
           luau-lsp analyze --no-strict-dm-types --sourcemap=sourcemap.json --definitions=globalTypes.d.lua --definitions=utils.d.lua --definitions=roact.d.lua --definitions=unc.d.lua --definitions=loaded.d.lua --base-luaurc=.luaurc --ignore=Packages/** src/
         
