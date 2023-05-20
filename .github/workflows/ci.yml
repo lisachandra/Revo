@@ -39,5 +39,5 @@ jobs:
         run: |
           rojo sourcemap dev.project.json --output sourcemap.json
           wally-package-types --sourcemap sourcemap.json Packages/
-          luau-lsp analyze --no-strict-dm-types --sourcemap=sourcemap.json --definitions=globalTypes.d.lua --definitions=utils.d.lua --definitions=roact.d.lua --definitions=unc.d.lua --definitions=loaded.d.lua --base-luaurc=.luaurc --ignore=Packages/** src/
+          luau-lsp analyze --no-strict-dm-types --sourcemap=sourcemap.json --definitions=loaded.d.lua --definitions=unc.d.lua --definitions=roact.d.lua --definitions=utils.d.lua --definitions=globalTypes.d.lua --base-luaurc=.luaurc --ignore=Packages/** src/
         
