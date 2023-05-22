@@ -7,11 +7,12 @@ local Types = require(script.Parent.Types)
 
 local merge = require(script.Parent.merge)
 
-type props = { name: string }
+type props = {}
 
 type internal = {
     ref: RoactRef<Frame & { Side: Frame & { Tabs: Frame }, Pages: Frame }>,
     theme: Types.theme,
+    name: string,
 
     opened: boolean,
     open: () -> (),

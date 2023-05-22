@@ -92,7 +92,6 @@ type theme = {
 
 type info = {
     description: string?,
-    name: string,
     order: number,
 }
 
@@ -103,7 +102,7 @@ type Window = RoactElementFn<{
 }>
 
 type Label = RoactElementFn<info & { name: string }>
-type Page = RoactElementFn<{ name: string }>
+type Page = RoactElementFn<{}>
 
 type Toggle = RoactElementFn<{
     info: info,

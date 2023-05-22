@@ -52,16 +52,17 @@ local function Window(props: props, hooks: RoactHooks.Hooks)
         if value then opened = key; break end
     end
 
-    for name, page in pairs(props[Roact.Children]) do 
-        for key, element in pairs(page.props[Roact.Children]) do
-            tips.value[key] = tips.value[key] or false
+    for pageName, page in pairs(props[Roact.Children]) do 
+        for elementName, element in pairs(page.props[Roact.Children]) do
+            tips.value[elementName] = tips.value[elementName] or false
 
             element.props.info.ref = ref.value
             element.props.info.theme = props.theme
+            element.props.info.name = elementName
             element.props.info.tip = {
-                opened = tips.value[key],
+                opened = tips.value[elementName],
                 update = function(value: boolean)
-                   tips.value[key] = value
+                   tips.value[elementName] = value
                    render()
                 end,
             }
@@ -72,15 +73,15 @@ local function Window(props: props, hooks: RoactHooks.Hooks)
 
             ref = ref.value,
             theme = props.theme,
-            name = name,
+            name = pageName,
 
-            opened = opened == name and true or false,
+            opened = opened == pageName and true or false,
             
             open = function()
                 local newPages = table.clone(pagesOpened); for key, value in pairs(newPages) do
                     if value == true then
                         newPages[key] = false
-                    elseif name == key then
+                    elseif pageName == key then
                         newPages[key] = true
                     end
                 end
