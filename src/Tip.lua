@@ -25,7 +25,7 @@ type styles = {
 local function Tip(props: props & internal, hooks: RoactHooks.Hooks)
     local ref = props.ref:getValue()
 
-    local styles: any, api = RoactSpring.useSpring(function()
+    local styles: any, api = RoactSpring.useSpring(hooks, function()
         return {
             position = UDim2.fromScale(0, 2),
             config = RoactSpring.config.gentle :: any,

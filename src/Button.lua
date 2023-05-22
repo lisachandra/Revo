@@ -22,7 +22,7 @@ type styles = {
 local function Button(props: props, hooks: RoactHooks.Hooks)
     local ref = hooks.useValue(Roact.createRef())
 
-    local styles: any, api = RoactSpring.useSpring(function()
+    local styles: any, api = RoactSpring.useSpring(hooks, function()
         return {
             background = props.info.theme.background,
             config = RoactSpring.config.stiff :: any,

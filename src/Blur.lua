@@ -22,7 +22,7 @@ local function Blur(props: props & internal, hooks: RoactHooks.Hooks)
     local focused, updateFocus = hooks.useState(nil :: string?)
     local _, render = hooks.useState(nil)
 
-    local styles: any, api = RoactSpring.useSpring(function()
+    local styles: any, api = RoactSpring.useSpring(hooks, function()
         return {
             transparency = 1,
             config = RoactSpring.config.stiff :: any,

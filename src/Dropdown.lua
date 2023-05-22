@@ -31,7 +31,7 @@ local function Dropdown(props: props, hooks: RoactHooks.Hooks)
 
     local selected, updateSelected = hooks.useState(props.initialValue or props.info.name)
 
-    local styles: any, api = RoactSpring.useSpring(function()
+    local styles: any, api = RoactSpring.useSpring(hooks, function()
         return {
             canvasSize = UDim2.fromOffset(352, 33),
             background = props.info.theme.background,

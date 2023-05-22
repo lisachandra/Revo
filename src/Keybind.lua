@@ -34,7 +34,7 @@ local function Keybind(props: props, hooks: RoactHooks.Hooks)
 
     local keybind, updateKeybind = hooks.useState(props.initialValue :: keybind?)
 
-    local styles: any, api = RoactSpring.useSpring(function()
+    local styles: any, api = RoactSpring.useSpring(hooks, function()
         return {
             background = props.info.theme.background,
             config = RoactSpring.config.stiff :: any,

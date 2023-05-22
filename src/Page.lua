@@ -26,7 +26,7 @@ type styles = {
 local function Page(props: props & internal, hooks: RoactHooks.Hooks)
     local Main = props.ref:getValue()
 
-    local styles: any, api = RoactSpring.useSpring(function()
+    local styles: any, api = RoactSpring.useSpring(hooks, function()
         return {
             sideTransparency = 1,
             canvasSize = UDim2.fromOffset(352, 0),

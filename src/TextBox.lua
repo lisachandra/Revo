@@ -25,7 +25,7 @@ local function TextBox(props: props, hooks: RoactHooks.Hooks)
 
     local placeholder, updatePlaceholder = hooks.useState(props.initialValue)
 
-    local styles: any, api = RoactSpring.useSpring(function()
+    local styles: any, api = RoactSpring.useSpring(hooks, function()
         return {
             background = props.info.theme.background,
             config = RoactSpring.config.stiff :: any,
