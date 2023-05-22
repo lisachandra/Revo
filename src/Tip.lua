@@ -9,17 +9,20 @@ type props = {
     ref: RoactRef<Frame & { Tips: Frame }>,
     description: string,
     theme: Types.theme,
-    template: RoactElement,
 
     opened: boolean,
-    open: () -> boolean,
+    update: (value: boolean) -> (),
+}
+
+type internal = {
+    template: RoactElement,
 }
 
 type styles = {
     position: RoactBinding<UDim2>,
 }
 
-local function Tip(props: props, hooks: RoactHooks.Hooks)
+local function Tip(props: props & internal, hooks: RoactHooks.Hooks)
     local ref = props.ref:getValue()
 
     local styles: any, api = RoactSpring.useSpring(function()
@@ -44,7 +47,9 @@ local function Tip(props: props, hooks: RoactHooks.Hooks)
         Button = Roact.createElement(props.template, {
             ImageColor = props.theme.schemeColor,
 
-            [Roact.Event.MouseButton1Click] = props.open,
+            [Roact.Event.MouseButton1Click] = function(_self: TextButton)
+                props.update(true)
+            end,
         }),
 
         Tip = Roact.createElement(Roact.Portal, {
@@ -65,4 +70,4 @@ local function Tip(props: props, hooks: RoactHooks.Hooks)
     })
 end
 
-return RoactHooks.new(Roact :: any)(Tip)
+return (RoactHooks.new(Roact :: any)(Tip) :: any) :: RoactElementFn<props>

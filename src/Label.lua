@@ -14,4 +14,4 @@ local function Label(props: props)
     })
 end
 
-return Label
+return Label :: RoactElementFn<props>

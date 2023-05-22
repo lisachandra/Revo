@@ -2,8 +2,11 @@ type updateBinding<T> = (value: T) -> ()
 
 export type info = {
     description: string?,
+    name: string,
     order: number,
     theme: theme,
+    ref: RoactRef<Frame & { Tips: Frame }>,
+    tip: { opened: boolean, update: (value: boolean) -> () }
 }
 
 export type theme = {
@@ -12,46 +15,6 @@ export type theme = {
     header: Color3,
     textColor: Color3,
     elementColor: Color3,
-}
-
-export type toggle = {
-    info: info,
-    initialValue: boolean,
-    binding: updateBinding<boolean>,
-}
-
-export type keybind = {
-    info: info,
-    initialValue: { Enum.KeyCode | Enum.UserInputType },
-    binding: updateBinding<boolean>,
-}
-
-export type dropdown = {
-    info: info,
-    initialValue: string,
-
-    values: { string },
-    binding: updateBinding<string>,
-}
-
-export type textBox = {
-    info: info,
-    initialValue: string,
-
-    binding: updateBinding<string>,
-}
-
-export type colorPicker = {
-    info: info,
-    initialValue: Color3,
-
-    binding: updateBinding<Color3>,
-}
-
-export type button = {
-    info: info,
-
-    pressed: () -> (),
-}
+} 
 
 return {}

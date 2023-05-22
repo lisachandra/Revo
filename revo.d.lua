@@ -92,8 +92,8 @@ type theme = {
 
 type info = {
     description: string?,
+    name: string,
     order: number,
-    theme: theme,
 }
 
 type Window = RoactElementFn<{
@@ -103,14 +103,49 @@ type Window = RoactElementFn<{
 }>
 
 type Label = RoactElementFn<info & { name: string }>
-type Page = RoactElementFn<{}>
+type Page = RoactElementFn<{ name: string }>
 
-type Toggle = RoactElementFn<{}>
-type Button = RoactElementFn<{}>
-type Keybind = RoactElementFn<{}>
-type TextBox = RoactElementFn<{}>
-type Dropdown = RoactElementFn<{}>
-type ColorPicker = RoactElementFn<{}>
+type Toggle = RoactElementFn<{
+    info: info,
+    initialValue: boolean,
+
+    update: (value: boolean) -> (),
+}>
+
+type Button = RoactElementFn<{
+    info: info,
+
+    pressed: () -> (),
+}>
+
+type Keybind = RoactElementFn<{
+    info: info,
+    initialValue: Enum.KeyCode | Enum.UserInputType,
+
+    update: (value: Enum.KeyCode | Enum.UserInputType) -> (),
+}>
+
+type TextBox = RoactElementFn<{
+    info: info,
+    initialValue: string,
+
+    update: (value: string) -> (),
+}>
+
+type Dropdown = RoactElementFn<{
+    info: info,
+    initialValue: string?,
+
+    options: { string },
+    update: (value: string) -> (),
+}>
+
+type ColorPicker = RoactElementFn<{
+    info: info,
+    initialValue: Color3,
+
+    update: (value: Color3) -> (),
+}>
 
 export type Revo = {
     Themes: Themes,

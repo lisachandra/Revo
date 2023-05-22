@@ -1,4 +1,3 @@
-local GuiService = cloneref(game:GetService("GuiService"))
 local UserInputService = cloneref(game:GetService("UserInputService"))
 
 local Roact: Roact = require(script.Parent.Parent.Roact) :: any
@@ -8,11 +7,14 @@ local RoactSpring = require(script.Parent.Parent.RoactSpring)
 local Types = require(script.Parent.Types)
 
 type props = {
-    size: number,
-    ref: RoactRef<TextButton>,
-    template: RoactElement,
+    ref: RoactRef<GuiButton>,
     theme: Types.theme,
+}
+
+type internal = {
+    template: RoactElement,
     finished: () -> (),
+    size: number,
 }
 
 type styles = {
@@ -21,7 +23,7 @@ type styles = {
     size: RoactBinding<UDim2>,
 }
 
-local function Ripple(props: props, hooks: RoactHooks.Hooks)
+local function Ripple(props: props & internal, hooks: RoactHooks.Hooks)
     if props.ref then
         local button = props.ref:getValue()
         
@@ -59,7 +61,7 @@ local function Ripple(props: props, hooks: RoactHooks.Hooks)
         return Roact.createFragment(ripples)
     else
         local self = hooks.useValue(Roact.createRef() :: RoactRef<ImageLabel>)
-        local mousePosition = hooks.useValue(UserInputService:GetMouseLocation() - GuiService:GetGuiInset())
+        local mousePosition = hooks.useValue(UserInputService:GetMouseLocation())
 
         if self.value:getValue() then
             local styles: any, api = RoactSpring.useSpring(hooks, function()
@@ -98,4 +100,4 @@ local function Ripple(props: props, hooks: RoactHooks.Hooks)
     end
 end
 
-return RoactHooks.new(Roact :: any)(Ripple)
+return (RoactHooks.new(Roact :: any)(Ripple) :: any) :: RoactElementFn<props>

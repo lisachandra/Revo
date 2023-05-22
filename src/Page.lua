@@ -5,14 +5,15 @@ local RoactSpring = require(script.Parent.Parent.RoactSpring)
 local Templates = require(script.Parent.Templates)
 local Types = require(script.Parent.Types)
 
-type props = {
+local merge = require(script.Parent.merge)
+
+type props = { name: string }
+
+type internal = {
     ref: RoactRef<Frame & { Side: Frame & { Tabs: Frame }, Pages: Frame }>,
     theme: Types.theme,
-    name: string,
 
     opened: boolean,
-    tips: { value: { boolean }, update: (value: boolean) -> () },
-
     open: () -> (),
 }
 
@@ -21,18 +22,7 @@ type styles = {
     canvasSize: RoactBinding<UDim2>,
 }
 
-local function merge<A, B>(a: A, b: B): A & B
-    assert(type(a) == "table")
-    assert(type(b) == "table")
-
-    local new = table.clone(a); for key, value in pairs(b) do
-        new[key] = value
-    end
-
-    return new :: any
-end
-
-local function Page(props: props, hooks: RoactHooks.Hooks)
+local function Page(props: props & internal, hooks: RoactHooks.Hooks)
     local Main = props.ref:getValue()
 
     local styles: any, api = RoactSpring.useSpring(function()
@@ -52,10 +42,6 @@ local function Page(props: props, hooks: RoactHooks.Hooks)
         })
     end, { props.opened })
 
-    for key, element in pairs(props[Roact.Children]) do
-        element.props.info.theme = props.theme
-    end
-
     return Roact.createFragment({
         Tab = Roact.createElement(Roact.Portal, {
             target = Main.Side.Tabs :: Instance,
@@ -64,6 +50,7 @@ local function Page(props: props, hooks: RoactHooks.Hooks)
                 BackgroundColor3 = props.theme.schemeColor,
                 TextColor3 = props.theme.textColor,
                 BackgroundTransparency = styles.sideTransparency,
+                Text = props.name,
 
                 [Roact.Event.MouseButton1Click] = function(_self: TextButton)
                     if not props.opened then
@@ -80,13 +67,13 @@ local function Page(props: props, hooks: RoactHooks.Hooks)
                 Visible = props.opened,
                 BackgroundColor3 = props.theme.background,
                 ScrollBarImageColor3 = Color3.fromRGB(
-                    props.theme.schemeColor.R * 255 - 16,
-                    props.theme.schemeColor.G * 255 - 15,
-                    props.theme.schemeColor.B * 255 - 28
+                    (props.theme.schemeColor.R * 255) - 16,
+                    (props.theme.schemeColor.G * 255) - 15,
+                    (props.theme.schemeColor.B * 255) - 28
                 ),
 
                 CanvasSize = styles.canvasSize,
-            }, merge(props[Roact.Children], {
+            }, merge((props :: any)[Roact.Children], {
                 UIListLayout = {
                     [Roact.Change.AbsoluteContentSize] = function(self: UIListLayout)
                         api.start({
@@ -99,4 +86,4 @@ local function Page(props: props, hooks: RoactHooks.Hooks)
     })
 end
 
-return RoactHooks.new(Roact :: any)(Page)
+return (RoactHooks.new(Roact :: any)(Page) :: any) :: RoactElementFn<props>
