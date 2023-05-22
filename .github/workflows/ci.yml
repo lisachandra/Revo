@@ -30,9 +30,9 @@ jobs:
         run: |
           wally install
           curl -O https://raw.githubusercontent.com/JohnnyMorganz/luau-lsp/main/scripts/globalTypes.d.lua
-          curl -O https://gist.githubusercontent.com/zxibs/81fc195db5e0e374c63b98c262b99e1d/raw/
-          curl -O https://gist.githubusercontent.com/zxibs/1b861e0123ae548f282b106818202afd/raw/
-          curl -O https://gist.githubusercontent.com/zxibs/92756cffe2f8ee8fe801218cb2f88931/raw/
+          curl -O https://gist.githubusercontent.com/zxibs/81fc195db5e0e374c63b98c262b99e1d/raw/utils.d.lua
+          curl -O https://gist.githubusercontent.com/zxibs/1b861e0123ae548f282b106818202afd/raw/roact.d.lua
+          curl -O https://gist.githubusercontent.com/zxibs/92756cffe2f8ee8fe801218cb2f88931/raw/unc.d.lua
 
       - name: Analyze
         shell: bash
