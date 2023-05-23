@@ -106,4 +106,6 @@ local function Ripple(props: props & internal, hooks: RoactHooks.Hooks)
     end
 end
 
-return (RoactHooks.new(Roact :: any)(Ripple) :: any) :: RoactElementFn<props>
+Ripple = RoactHooks.new(Roact :: any)(Ripple) :: any
+
+return Ripple :: RoactElementFn<props>
