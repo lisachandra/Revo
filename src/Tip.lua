@@ -47,7 +47,7 @@ local function Tip(props: props & internal, hooks: RoactHooks.Hooks)
 
     return Roact.createFragment({
         Button = Roact.createElement(props.template, {
-            ImageColor = props.theme.schemeColor,
+            ImageColor3 = props.theme.schemeColor,
 
             [Roact.Event.MouseButton1Click] = function(_self: TextButton)
                 props.update(true)
