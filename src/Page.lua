@@ -26,7 +26,9 @@ type styles = {
 }
 
 local function Page(props: props & internal, hooks: RoactHooks.Hooks)
-    local Main = props.ref:getValue()
+    local Main = props.ref:getValue(); if not Main then
+        return Roact.createElement("Frame", { Visible = false })
+    end
 
     local styles: any, api = RoactSpring.useSpring(hooks, function()
         return {

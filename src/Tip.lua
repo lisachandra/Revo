@@ -23,7 +23,9 @@ type styles = {
 }
 
 local function Tip(props: props & internal, hooks: RoactHooks.Hooks)
-    local ref = props.ref:getValue()
+    local Main = props.ref:getValue(); if not Main then
+        return Roact.createElement("Frame", { Visible = false })
+    end
 
     local styles: any, api = RoactSpring.useSpring(hooks, function()
         return {
@@ -53,7 +55,7 @@ local function Tip(props: props & internal, hooks: RoactHooks.Hooks)
         }),
 
         Tip = Roact.createElement(Roact.Portal, {
-            target = ref.Tips :: Instance,
+            target = Main.Tips :: Instance,
         }, {
             Tip = Roact.createElement(Templates.Tip, {
                 BackgroundColor3 = Color3.fromRGB(
