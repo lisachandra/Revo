@@ -24,10 +24,6 @@ type styles = {
 }
 
 local function Window(props: props, hooks: RoactHooks.Hooks)
-    for k in pairs(props) do
-        print(k)
-    end
-
     local pagesOpened, updatePages = hooks.useState({} :: { boolean })
     local _, render = hooks.useState(nil)
     
