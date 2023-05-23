@@ -72,6 +72,7 @@ local function Blur(props: props & internal, hooks: RoactHooks.Hooks)
         BackgroundTransparency = styles.transparency,
 
         [Roact.Event.InputBegan] = function(_self: Frame, input: InputObject)
+            print(focused)
             if focused and input.UserInputType == Enum.UserInputType.MouseButton1 then
                 local connection; connection = input.Changed:Connect(function()
                     if input.UserInputState == Enum.UserInputState.End then
