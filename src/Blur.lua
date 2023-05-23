@@ -1,3 +1,5 @@
+local RunService = cloneref(game:GetService("UserInputService"))
+
 local Roact: Roact = require(script.Parent.Parent.Roact) :: any
 local RoactHooks = require(script.Parent.Parent.RoactHooks)
 local RoactSpring = require(script.Parent.Parent.RoactSpring)
@@ -6,7 +8,7 @@ local Types = require(script.Parent.Types)
 
 type props = {
     render: () -> (),
-    tips: { [string]: boolean },
+    tips: { value: { [string]: boolean } },
     theme: Types.theme,
 }
 
@@ -20,7 +22,6 @@ type styles = {
 
 local function Blur(props: props & internal, hooks: RoactHooks.Hooks)
     local focused, updateFocus = hooks.useState(nil :: string?)
-    local _, render = hooks.useState(nil)
 
     local styles: any, api = RoactSpring.useSpring(hooks, function()
         return {
@@ -38,29 +39,34 @@ local function Blur(props: props & internal, hooks: RoactHooks.Hooks)
     end, { focused })
 
     hooks.useEffect(function()
-        local once: true?
-        local changed = false; for key, opened in pairs(props.tips) do
-            if opened then
-                if once then
-                    props.tips[key] = false
-                    changed = true
-                elseif not focused then
-                    updateFocus(key)
-                elseif key ~= focused then
-                    props.tips[key] = false
-                    changed = true
+        local connection; connection = RunService.Heartbeat:Connect(function()
+            local once: true?
+            local changed = false; for key, opened in pairs(props.tips.value) do
+                if opened then
+                    if once then
+                        props.tips.value[key] = false
+                        changed = true
+                    elseif not focused then
+                        updateFocus(key)
+                    elseif key ~= focused then
+                        props.tips.value[key] = false
+                        changed = true
+                    end
+
+                    once = true
                 end
-
-                once = true
             end
-        end
 
-        if changed then
-            props.render()
-        else
-            render()
+            if changed then
+                props.render()
+            end
+        end)
+
+        return function()
+            connection:Disconnect()
+            connection = nil
         end
-    end)
+    end, {})
  
     return Roact.createElement(props.template, {
         BackgroundTransparency = styles.transparency,

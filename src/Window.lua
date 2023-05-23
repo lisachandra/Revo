@@ -127,7 +127,7 @@ local function Window(props: props, hooks: RoactHooks.Hooks)
             [Roact.Children] = {
                 Blur = RoactTemplate.wrapped(Blur, {
                     render = render,
-                    tips = tips.value,
+                    tips = tips,
                     theme = props.theme,
                 }),
 
