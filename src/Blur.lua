@@ -1,4 +1,4 @@
-local RunService = cloneref(game:GetService("UserInputService"))
+local RunService = cloneref(game:GetService("RunService"))
 
 local Roact: Roact = require(script.Parent.Parent.Roact) :: any
 local RoactHooks = require(script.Parent.Parent.RoactHooks)
