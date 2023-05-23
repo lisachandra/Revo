@@ -36,9 +36,7 @@ local function Blur(props: props & internal, hooks: RoactHooks.Hooks)
         api.start({
             transparency = focused and 0.5 or 1
         })
-    end, { focused })
 
-    hooks.useEffect(function()
         local connection; connection = RunService.Heartbeat:Connect(function()
             local once: true?
             local changed = false; for key, opened in pairs(props.tips.value) do
@@ -66,11 +64,11 @@ local function Blur(props: props & internal, hooks: RoactHooks.Hooks)
             connection:Disconnect()
             connection = nil
         end
-    end, {})
+    end, { focused })
  
     return Roact.createElement(props.template, {
         BackgroundTransparency = styles.transparency,
-        Visible = focused,
+        Visible = focused and true or false,
 
         [Roact.Event.InputBegan] = function(_self: Frame, input: InputObject)
             print(focused)
