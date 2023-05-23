@@ -36,29 +36,33 @@ local function Ripple(props: props & internal, hooks: RoactHooks.Hooks)
         ) or 0)
 
         hooks.useEffect(function()
-            local connection; connection = button.MouseButton1Click:Connect(function()
-                local ripples = table.clone(ripples)
-                local element; element = Roact.createElement(Ripple :: any, {
-                    size = sizeTarget.value,
-                    template = props.template,
-                    theme = props.theme,
-
-                    finished = function()
-                        table.remove(ripples, table.find(ripples, element))
-                    end,
-                })
-
-                table.insert(ripples, element)
+            if button then
+                local connection; connection = button.MouseButton1Click:Connect(function()
+                    local ripples = table.clone(ripples)
+                    local element; element = Roact.createElement(Ripple :: any, {
+                        size = sizeTarget.value,
+                        template = props.template,
+                        theme = props.theme,
+    
+                        finished = function()
+                            table.remove(ripples, table.find(ripples, element))
+                        end,
+                    })
+    
+                    table.insert(ripples, element)
+                    updateRipples(ripples)
+                end)
+    
+                return function()
+                    connection:Disconnect()
+                    connection = nil :: any
+                end :: any
+            else
                 updateRipples(ripples)
-            end)
-
-            updateRipples(ripples)
-
-            return function()
-                connection:Disconnect()
-                connection = nil :: any
             end
-        end, {})
+
+            return
+        end, { button and true or false })
 
         return Roact.createFragment(ripples)
     else
