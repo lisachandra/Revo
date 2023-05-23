@@ -28,12 +28,12 @@ local function Ripple(props: props & internal, hooks: RoactHooks.Hooks)
         local button = props.ref:getValue()
         
         local ripples, updateRipples = hooks.useState({})
-        local sizeTarget = hooks.useValue(
+        local sizeTarget = hooks.useValue(button and (
             if button.AbsoluteSize.X >= button.AbsoluteSize.Y then
                 button.AbsoluteSize.X * 1.5
             else
                 button.AbsoluteSize.Y * 1.5
-        )
+        ) or 0)
 
         hooks.useEffect(function()
             local connection; connection = button.MouseButton1Click:Connect(function()
@@ -51,6 +51,8 @@ local function Ripple(props: props & internal, hooks: RoactHooks.Hooks)
                 table.insert(ripples, element)
                 updateRipples(ripples)
             end)
+
+            updateRipples(ripples)
 
             return function()
                 connection:Disconnect()
