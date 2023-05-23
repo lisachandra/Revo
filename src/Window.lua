@@ -55,7 +55,7 @@ local function Window(props: props, hooks: RoactHooks.Hooks)
         if value then opened = key; break end
     end
 
-    local pages = {}; for pageName, page in pairs(props[Roact.Children]) do 
+    local pages = {}; for pageName, page in pairs(props[Roact.Children]) do
         table.insert(pages, Roact.createElement(Page, {
             ref = ref.value,
             theme = props.theme,
@@ -67,12 +67,12 @@ local function Window(props: props, hooks: RoactHooks.Hooks)
             render = render,
             open = function()
                 local newPages = table.clone(pagesOpened); for key, value in pairs(newPages) do
-                    if pageName == key then
-                        newPages[key] = true
-                    elseif value == true then
+                    if value then
                         newPages[key] = false
                     end
                 end
+
+                newPages[pageName] = true
     
                 updatePages(newPages)
             end,
