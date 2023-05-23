@@ -67,10 +67,10 @@ local function Window(props: props, hooks: RoactHooks.Hooks)
             render = render,
             open = function()
                 local newPages = table.clone(pagesOpened); for key, value in pairs(newPages) do
-                    if value == true then
-                        newPages[key] = false
-                    elseif pageName == key then
+                    if pageName == key then
                         newPages[key] = true
+                    elseif value == true then
+                        newPages[key] = false
                     end
                 end
     
