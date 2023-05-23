@@ -101,7 +101,7 @@ type Window = RoactElementFn<{
     theme: theme,
 }>
 
-type Label = RoactElementFn<info & { name: string }>
+type Label = RoactElementFn<{ info: info }>
 type Page = RoactElementFn<{}>
 
 type Toggle = RoactElementFn<{
