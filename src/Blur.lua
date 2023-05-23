@@ -70,6 +70,7 @@ local function Blur(props: props & internal, hooks: RoactHooks.Hooks)
  
     return Roact.createElement(props.template, {
         BackgroundTransparency = styles.transparency,
+        Visible = focused,
 
         [Roact.Event.InputBegan] = function(_self: Frame, input: InputObject)
             print(focused)
