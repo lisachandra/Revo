@@ -124,13 +124,13 @@ local function Window(props: props, hooks: RoactHooks.Hooks)
         },
 
         Pages = {
-            Blur = RoactTemplate.wrapped(Blur, {
-                render = render,
-                tips = tips.value,
-                theme = props.theme,
-            }),
-
             [Roact.Children] = {
+                Blur = RoactTemplate.wrapped(Blur, {
+                    render = render,
+                    tips = tips.value,
+                    theme = props.theme,
+                }),
+
                 Pages = Roact.createFragment(pages),
             },
         },
