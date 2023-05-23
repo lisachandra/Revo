@@ -11,11 +11,13 @@ type props = {}
 
 type internal = {
     ref: RoactRef<Frame & { Side: Frame & { Tabs: Frame }, Pages: Frame }>,
+    tips: { value: { boolean } },
     theme: Types.theme,
     name: string,
 
     opened: boolean,
     open: () -> (),
+    render: () -> ()
 }
 
 type styles = {
@@ -42,6 +44,25 @@ local function Page(props: props & internal, hooks: RoactHooks.Hooks)
             sideTransparency = props.opened and 0 or 1
         })
     end, { props.opened })
+
+    local elements = {}; for elementName, element in pairs((props :: any)[Roact.Children]) do
+        props.tips.value[elementName] = props.tips.value[elementName] or false
+
+        table.insert(elements, Roact.createElement(element.component, merge(element.props, {
+            info = merge(element.props.info, {
+                ref = props.ref,
+                theme = props.theme,
+                name = elementName,
+                tip = {
+                    opened = props.tips.value[elementName],
+                    update = function(value: boolean)
+                        props.tips.value[elementName] = value
+                        props.render()
+                    end,
+                },
+            }),
+        })))
+    end
 
     return Roact.createFragment({
         Tab = Roact.createElement(Roact.Portal, {
@@ -74,7 +95,7 @@ local function Page(props: props & internal, hooks: RoactHooks.Hooks)
                 ),
 
                 CanvasSize = styles.canvasSize,
-            }, merge((props :: any)[Roact.Children], {
+            }, merge(elements, {
                 UIListLayout = {
                     [Roact.Change.AbsoluteContentSize] = function(self: UIListLayout)
                         api.start({

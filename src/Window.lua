@@ -10,6 +10,7 @@ local Templates = require(script.Parent.Templates)
 local Types = require(script.Parent.Types)
 
 local Blur = require(script.Parent.Blur)
+local Page = require(script.Parent.Page)
 
 type props = {
     visible: boolean,
@@ -52,31 +53,16 @@ local function Window(props: props, hooks: RoactHooks.Hooks)
         if value then opened = key; break end
     end
 
-    for pageName, page in pairs(props[Roact.Children]) do 
-        for elementName, element in pairs(page.props[Roact.Children]) do
-            tips.value[elementName] = tips.value[elementName] or false
-
-            element.props.info.ref = ref.value
-            element.props.info.theme = props.theme
-            element.props.info.name = elementName
-            element.props.info.tip = {
-                opened = tips.value[elementName],
-                update = function(value: boolean)
-                   tips.value[elementName] = value
-                   render()
-                end,
-            }
-        end
-
-        page.props = {
-            [Roact.Children] = page.props[Roact.Children],
-
+    local pages = {}; for pageName, page in pairs(props[Roact.Children]) do 
+        table.insert(pages, Roact.createElement(Page, {
             ref = ref.value,
             theme = props.theme,
             name = pageName,
+            tips = tips,
 
             opened = opened == pageName and true or false,
             
+            render = render,
             open = function()
                 local newPages = table.clone(pagesOpened); for key, value in pairs(newPages) do
                     if value == true then
@@ -88,7 +74,7 @@ local function Window(props: props, hooks: RoactHooks.Hooks)
     
                 updatePages(newPages)
             end,
-        }
+        }, page.props[Roact.Children]))
     end
 
     return Roact.createElement(Templates.Window, {
@@ -145,7 +131,7 @@ local function Window(props: props, hooks: RoactHooks.Hooks)
             }),
 
             [Roact.Children] = {
-                Pages = Roact.createFragment(props[Roact.Children]),
+                Pages = Roact.createFragment(pages),
             },
         },
     })
