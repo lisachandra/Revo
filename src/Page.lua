@@ -77,6 +77,8 @@ local function Page(props: props & internal, hooks: RoactHooks.Hooks)
                 Text = props.name,
 
                 [Roact.Event.MouseButton1Click] = function(_self: TextButton)
+                    print("testing")
+
                     if not props.opened then
                         props.open()
                     end
