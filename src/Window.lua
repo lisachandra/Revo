@@ -41,6 +41,8 @@ local function Window(props: props, hooks: RoactHooks.Hooks)
     local styles: styles = styles
 
     hooks.useEffect(function()
+        render()
+
         return function()
             if dragConnection.value then
                 dragConnection.value:Disconnect()
