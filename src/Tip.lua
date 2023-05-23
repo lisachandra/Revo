@@ -39,9 +39,9 @@ local function Tip(props: props & internal, hooks: RoactHooks.Hooks)
     hooks.useEffect(function()
         api.start({
             position = if props.opened then
-                UDim2.fromScale(0, 2)
-            else
                 UDim2.fromScale(0, 0)
+            else
+                UDim2.fromScale(0, 2)
         })
     end, { props.opened })
 
@@ -66,7 +66,10 @@ local function Tip(props: props & internal, hooks: RoactHooks.Hooks)
 
                 Position = styles.position,
             }, {
-                Tip = { TextColor3 = props.theme.textColor }
+                Tip = {
+                    TextColor3 = props.theme.textColor,
+                    Text = props.description
+                }
             })
         })
     })

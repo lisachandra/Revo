@@ -24,7 +24,7 @@ local function Button(props: props, hooks: RoactHooks.Hooks)
 
     local styles: any, api = RoactSpring.useSpring(hooks, function()
         return {
-            background = props.info.theme.background,
+            background = props.info.theme.elementColor,
             config = RoactSpring.config.stiff :: any,
         }
     end)

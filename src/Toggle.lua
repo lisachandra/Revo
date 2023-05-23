@@ -28,7 +28,7 @@ local function Toggle(props: props, hooks: RoactHooks.Hooks)
     local styles: any, api = RoactSpring.useSpring(hooks, function()
         return {
             transparency = props.initialValue and 0 or 1,
-            background = props.info.theme.background,
+            background = props.info.theme.elementColor,
             config = RoactSpring.config.stiff :: any,
         }
     end)

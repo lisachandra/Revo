@@ -48,7 +48,7 @@ local function ColorPicker(props: props, hooks: RoactHooks.Hooks)
 
     local styles: any, api = RoactSpring.useSpring(hooks, function()
         return {
-            background = props.info.theme.background,
+            background = props.info.theme.elementColor,
             canvasSize = UDim2.fromOffset(352, 33),
             rainbowToggleTransparency = 1,
 
