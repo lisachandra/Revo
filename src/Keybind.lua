@@ -32,7 +32,7 @@ type styles = {
 local function Keybind(props: props, hooks: RoactHooks.Hooks)
     local ref = hooks.useValue(Roact.createRef() :: RoactRef<TextButton>)
 
-    local keybind, updateKeybind = hooks.useState(props.initialValue :: keybind?)
+    local keybind: RoactBinding<keybind>, updateKeybind = hooks.useBinding(props.initialValue)
 
     local styles: any, api = RoactSpring.useSpring(hooks, function()
         return {
@@ -43,18 +43,14 @@ local function Keybind(props: props, hooks: RoactHooks.Hooks)
 
     local styles: styles = styles
 
-    hooks.useEffect(function()
-        if keybind then
-            props.update(keybind)
-        end
-    end, { keybind })
-
     return Roact.createElement(Templates.Keybind, {
         [Roact.Ref] = ref.value :: any,
 
         BackgroundColor3 = styles.background,
         LayoutOrder = props.info.order,
-        Text = keybind and keybind.Name or ". . .",
+        Text = keybind:map(function(value)
+            return value and value.Name or ". . ."
+        end),
 
         [Roact.Event.MouseButton1Click] = function(_self: TextButton)
             updateKeybind(nil :: any)

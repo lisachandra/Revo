@@ -22,7 +22,6 @@ type internal = {
 
 type styles = {
     sideTransparency: RoactBinding<number>,
-    canvasSize: RoactBinding<UDim2>,
 }
 
 local function Page(props: props & internal, hooks: RoactHooks.Hooks)
@@ -33,8 +32,6 @@ local function Page(props: props & internal, hooks: RoactHooks.Hooks)
     local styles: any, api = RoactSpring.useSpring(hooks, function()
         return {
             sideTransparency = 1,
-            canvasSize = UDim2.fromOffset(352, 0),
-
             config = RoactSpring.config.stiff :: any,
         }
     end)
@@ -95,8 +92,6 @@ local function Page(props: props & internal, hooks: RoactHooks.Hooks)
                     (props.theme.schemeColor.G * 255) - 15,
                     (props.theme.schemeColor.B * 255) - 28
                 ),
-
-                CanvasSize = styles.canvasSize,
             }, elements)
         })
     })

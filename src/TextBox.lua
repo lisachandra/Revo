@@ -23,7 +23,7 @@ type styles = {
 local function TextBox(props: props, hooks: RoactHooks.Hooks)
     local ref = hooks.useValue(Roact.createRef() :: RoactRef<TextButton>)
 
-    local placeholder, updatePlaceholder = hooks.useState(props.initialValue)
+    local placeholder: RoactBinding<string>, updatePlaceholder = hooks.useBinding(props.initialValue)
 
     local styles: any, api = RoactSpring.useSpring(hooks, function()
         return {
@@ -33,10 +33,6 @@ local function TextBox(props: props, hooks: RoactHooks.Hooks)
     end)
 
     local styles: styles = styles
-
-    hooks.useEffect(function()
-        props.update(placeholder)
-    end, { placeholder })
 
     return Roact.createElement(Templates.TextBox, {
         [Roact.Ref] = ref.value :: any,
@@ -86,9 +82,13 @@ local function TextBox(props: props, hooks: RoactHooks.Hooks)
                 (props.info.theme.schemeColor.B * 255) - 35
             ),
 
-            TextColor3 = props.info.theme.textColor,
-            PlaceholderText = placeholder,
             Text = "",
+            TextColor3 = props.info.theme.textColor,
+            PlaceholderText = placeholder:map(function(value)
+                props.update(value)
+
+                return value
+            end),
 
             [Roact.Event.FocusLost] = function(self: TextBox, enterPressed: boolean)
                 if enterPressed then

@@ -28,7 +28,7 @@ local function Dropdown(props: props, hooks: RoactHooks.Hooks)
     local ref = hooks.useValue(Roact.createRef())
     local opened = hooks.useValue(false)
 
-    local selected, updateSelected = hooks.useState(props.initialValue or props.info.name)
+    local selected: RoactBinding<string>, updateSelected = hooks.useBinding(props.initialValue or props.info.name)
 
     local styles: any, api = RoactSpring.useSpring(hooks, function()
         return {
@@ -39,10 +39,6 @@ local function Dropdown(props: props, hooks: RoactHooks.Hooks)
     end)
 
     local styles: styles = styles
-
-    hooks.useEffect(function()
-        props.update(selected)
-    end, { selected })
 
     local options = {}; for index, option in ipairs(props.options) do
         table.insert(options, Roact.createElement(Option, {
@@ -62,8 +58,8 @@ local function Dropdown(props: props, hooks: RoactHooks.Hooks)
             
             BackgroundColor3 = styles.background,
 
-            [Roact.Event.MouseButton1Click] = function(self: Frame & { UIListLayout: UIListLayout })
-                local absoluteContentSize = self.UIListLayout.AbsoluteContentSize
+            [Roact.Event.MouseButton1Click] = function(self: Frame & { Parent: Frame & { UIListLayout: UIListLayout } })
+                local absoluteContentSize = self.Parent.UIListLayout.AbsoluteContentSize
 
                 opened.value = not opened.value
 
@@ -104,7 +100,11 @@ local function Dropdown(props: props, hooks: RoactHooks.Hooks)
 
                 Selected = {
                     TextColor3 = props.info.theme.textColor,
-                    Text = selected,
+                    Text = selected:map(function(value)
+                        props.update(value)
+
+                        return value
+                    end),
                 },
 
                 Icon = { ImageColor3 = props.info.theme.schemeColor },
