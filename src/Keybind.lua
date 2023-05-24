@@ -91,7 +91,7 @@ local function Keybind(props: props, hooks: RoactHooks.Hooks)
         }),
 
         Keybind = {
-            TextColor3 = props.info.theme.textColor,
+            TextColor3 = props.info.theme.schemeColor,
             Text = keybind:map(function(value)
                 if value then
                     props.update(value)
@@ -102,7 +102,7 @@ local function Keybind(props: props, hooks: RoactHooks.Hooks)
         },
 
         Name = {
-            TextColor3 = props.info.theme.schemeColor,
+            TextColor3 = props.info.theme.textColor,
             Text = props.info.name,
         },
 
