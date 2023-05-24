@@ -64,7 +64,6 @@ local function Keybind(props: props, hooks: RoactHooks.Hooks)
                 (input.UserInputType and table.find(INPUTS, input.UserInputType))
             then
                 updateKeybind(input.KeyCode or input.UserInputType)
-                props.update(input.KeyCode or input.UserInputType)
             end
         end,
 
