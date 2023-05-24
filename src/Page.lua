@@ -86,7 +86,6 @@ local function Page(props: props & internal, hooks: RoactHooks.Hooks)
         }, {
             Page = Roact.createElement(Templates.Page, {
                 Visible = props.opened,
-                BackgroundColor3 = props.theme.background,
                 ScrollBarImageColor3 = Color3.fromRGB(
                     (props.theme.schemeColor.R * 255) - 16,
                     (props.theme.schemeColor.G * 255) - 15,

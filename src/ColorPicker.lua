@@ -128,8 +128,20 @@ local function ColorPicker(props: props, hooks: RoactHooks.Hooks)
             [Roact.Children] = {
                 Rainbow = {
                     [Roact.Children] = {
-                        Button = {
-                            [Roact.Event.MouseButton1Click] = function(_self: TextButton)
+                        Fill = {
+                            [Roact.Event.InputBegan] = function(_self: TextButton, input: InputObject)
+                                if input.UserInputType ~= Enum.UserInputType.MouseButton1 then
+                                    return
+                                end
+
+                                while true do
+                                    input.Changed:Wait()
+
+                                    if input.UserInputState == Enum.UserInputState.End then
+                                        break
+                                    end
+                                end
+
                                 if rainbowConnection.value then
                                     rainbowConnection.value:Disconnect()
                                     rainbowConnection.value = nil
@@ -146,9 +158,7 @@ local function ColorPicker(props: props, hooks: RoactHooks.Hooks)
                                     rainbowToggleTransparency = rainbowConnection.value and 0 or 1,
                                 })
                             end,
-                        },
 
-                        Fill = {
                             ImageColor3 = props.info.theme.schemeColor,
                             ImageTransparency = styles.rainbowToggleTransparency,
                         },

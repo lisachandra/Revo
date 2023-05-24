@@ -22,6 +22,7 @@ type props = {
 
 type styles = {
     background: RoactBinding<Color3>,
+    canvasSize: RoactBinding<UDim2>,
 }
 
 local function Dropdown(props: props, hooks: RoactHooks.Hooks)
@@ -50,8 +51,8 @@ local function Dropdown(props: props, hooks: RoactHooks.Hooks)
     end
 
     return Roact.createElement(Templates.Dropdown, {
-        BackgroundColor3 = props.info.theme.background,
         LayoutOrder = props.info.order,
+        Size = styles.canvasSize,
     }, merge(options, {
         Open = {
             [Roact.Ref] = ref.value :: any,
