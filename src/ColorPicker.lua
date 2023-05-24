@@ -70,7 +70,7 @@ local function ColorPicker(props: props, hooks: RoactHooks.Hooks)
         
         [Roact.Event.MouseButton1Click] = function(_self: TextButton)
             api.start({
-                canvasSize = opened.value and UDim2.fromOffset(352, 33) or UDim2.fromOffset(352, 141),
+                canvasSize = opened.value and UDim2.fromOffset(352, 141) or UDim2.fromOffset(352, 33),
             })
         end,
 
