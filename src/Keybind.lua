@@ -49,6 +49,10 @@ local function Keybind(props: props, hooks: RoactHooks.Hooks)
         BackgroundColor3 = styles.background,
         LayoutOrder = props.info.order,
         Text = keybind:map(function(value)
+            if value then
+                props.update(value)
+            end
+
             return value and value.Name or ". . ."
         end),
 
