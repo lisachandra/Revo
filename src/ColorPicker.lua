@@ -34,9 +34,6 @@ local function ColorPicker(props: props, hooks: RoactHooks.Hooks)
 
     local colorRef = hooks.useValue(Roact.createRef() :: RoactRef<ImageButton>)
     local opacityRef = hooks.useValue(Roact.createRef() :: RoactRef<ImageButton>)
-
-    local colorCursorRef = hooks.useValue(Roact.createRef() :: RoactRef<ImageLabel>)
-    local opacityCursorRef = hooks.useValue(Roact.createRef() :: RoactRef<ImageLabel>)
     
     local frames = hooks.useValue(0)
     local opened = hooks.useValue(false)
@@ -167,11 +164,12 @@ local function ColorPicker(props: props, hooks: RoactHooks.Hooks)
 
                     [Roact.Children] = {
                         Cursor = {
-                            [Roact.Ref] = opacityCursorRef.value,
-
                             Position = hsv:map(function(value)
-                                local colorSize = colorRef.value:getValue().AbsoluteSize
-                                return UDim2.new(0.5, 0, value[3] - 1, -colorSize.Y / 2)
+                                local color = colorRef.value:getValue(); if color then
+                                    return UDim2.new(0.5, 0, value[3] - 1, -color.AbsoluteSize.Y / 2)
+                                end
+
+                                return UDim2.new()
                             end),
 
                             ImageColor3 = hsv:map(function(value)
@@ -217,11 +215,13 @@ local function ColorPicker(props: props, hooks: RoactHooks.Hooks)
 
                     [Roact.Children] = {
                         Cursor = {
-                            [Roact.Ref] = colorCursorRef.value,
-
                             Position = hsv:map(function(value)
-                                local colorSize = colorRef.value:getValue().AbsoluteSize / 2
-                                return UDim2.new(value[1], -colorSize.X, value[2] - 1, -colorSize.Y)
+                                local color = colorRef.value:getValue(); if color then
+                                    local colorSize = color.AbsoluteSize / 2
+                                    return UDim2.new(value[1], -colorSize.X, value[2] - 1, -colorSize.Y)
+                                end
+
+                                return UDim2.new()
                             end),
 
                             ImageColor3 = hsv:map(function(value)
