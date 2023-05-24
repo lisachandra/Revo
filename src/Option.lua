@@ -20,7 +20,7 @@ type styles = {
 }
 
 local function Option(props: props, hooks: RoactHooks.Hooks)
-    local ref = hooks.useValue(Roact.createRef())
+    local ref = hooks.useValue(Roact.createRef() :: RoactRef<TextButton>)
 
     local styles: any, api = RoactSpring.useSpring(hooks, function()
         return {
@@ -31,7 +31,7 @@ local function Option(props: props, hooks: RoactHooks.Hooks)
 
     local styles: styles = styles
 
-    return Roact.createElement(Templates.Toggle, {
+    return Roact.createElement(Templates.Option, {
         [Roact.Ref] = ref.value :: any,
 
         TextColor3 = Color3.fromRGB(
@@ -65,7 +65,7 @@ local function Option(props: props, hooks: RoactHooks.Hooks)
         end,
     }, {
         Ripple = RoactTemplate.wrapped(Ripple, {
-            ref = ref.value,
+            ref = ref.value :: any,
             theme = props.theme,
         }),
     })

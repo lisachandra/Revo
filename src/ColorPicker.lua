@@ -30,15 +30,13 @@ local function zigzag(t: number)
 end
 
 local function ColorPicker(props: props, hooks: RoactHooks.Hooks)
-    local ref = hooks.useValue(Roact.createRef())
+    local ref = hooks.useValue(Roact.createRef() :: RoactRef<TextButton>)
 
-    local colorSize = hooks.useValue(Vector2.zero)
-    local opacitySize = hooks.useValue(Vector2.zero)
-    local colorPosition = hooks.useValue(Vector2.zero)
-    local opacityPosition = hooks.useValue(Vector2.zero)
+    local colorRef = hooks.useValue(Roact.createRef() :: RoactRef<ImageButton>)
+    local opacityRef = hooks.useValue(Roact.createRef() :: RoactRef<ImageButton>)
 
-    local colorCursorSize = hooks.useValue(Vector2.zero)
-    local opacityCursorSize = hooks.useValue(Vector2.zero)
+    local colorCursorRef = hooks.useValue(Roact.createRef() :: RoactRef<ImageLabel>)
+    local opacityCursorRef = hooks.useValue(Roact.createRef() :: RoactRef<ImageLabel>)
     
     local frames = hooks.useValue(0)
     local opened = hooks.useValue(false)
@@ -100,7 +98,7 @@ local function ColorPicker(props: props, hooks: RoactHooks.Hooks)
 
             [Roact.Children] = {
                 Ripple = RoactTemplate.wrapped(Ripple, {
-                    ref = ref.value,
+                    ref = ref.value :: any,
                     theme = props.info.theme,
                 }),
         
@@ -165,19 +163,20 @@ local function ColorPicker(props: props, hooks: RoactHooks.Hooks)
                 },
 
                 Opacity = {
+                    [Roact.Ref] = opacityRef.value :: any,
+
                     [Roact.Children] = {
                         Cursor = {
+                            [Roact.Ref] = opacityCursorRef.value,
+
                             Position = hsv:map(function(value)
-                                return UDim2.new(0.5, 0, value[3] - 1, -colorSize.value.Y / 2)
+                                local colorSize = colorRef.value:getValue().AbsoluteSize
+                                return UDim2.new(0.5, 0, value[3] - 1, -colorSize.Y / 2)
                             end),
 
                             ImageColor3 = hsv:map(function(value)
                                 return Color3.fromHSV(0, 0, 1 - value[3])
                             end),
-
-                            [Roact.Change.AbsoluteSize] = function(self: ImageLabel)
-                                opacityCursorSize.value = self.AbsoluteSize
-                            end,
                         }
                     } :: any,
 
@@ -185,19 +184,22 @@ local function ColorPicker(props: props, hooks: RoactHooks.Hooks)
                         if input.UserInputType == Enum.UserInputType.MouseButton1 then
                             local connection; connection = input.Changed:Connect(function()
                                 if input.UserInputState == Enum.UserInputState.Change then
+                                    local colorSize = colorRef.value:getValue().AbsoluteSize
+                                    local opacitySize = opacityRef.value:getValue().AbsoluteSize
+
                                     local mousePosition = UserInputService:GetMouseLocation()
-                                    local y = mousePosition.Y - colorSize.value.Y
+                                    local y = mousePosition.Y - colorSize.Y
                                     local currentHsv = hsv:getValue()
 
                                     if y < 0 then
                                         y = 0
                                     end
 
-                                    if y > opacitySize.value.Y then
-                                        y = opacitySize.value.Y
+                                    if y > opacitySize.Y then
+                                        y = opacitySize.Y
                                     end
 
-                                    y = y / opacitySize.value.Y
+                                    y = y / opacitySize.Y
 
                                     updateHsv({ currentHsv[1], currentHsv[2], 1 - y })
                                     props.update(Color3.fromHSV(table.unpack(hsv:getValue())))
@@ -208,31 +210,23 @@ local function ColorPicker(props: props, hooks: RoactHooks.Hooks)
                             end)
                         end
                     end,
-
-                    [Roact.Change.AbsoluteSize] = function(self: ImageButton)
-                        opacitySize.value = self.AbsoluteSize
-                    end,
-
-                    [Roact.Change.AbsolutePosition] = function(self: ImageButton)
-                        opacityPosition.value = self.AbsolutePosition
-                    end,
                 },
 
                 Color = {
+                    [Roact.Ref] = colorRef.value :: any,
+
                     [Roact.Children] = {
                         Cursor = {
+                            [Roact.Ref] = colorCursorRef.value,
+
                             Position = hsv:map(function(value)
-                                local absoluteSize = colorSize.value / 2
-                                return UDim2.new(value[1], -absoluteSize.X, value[2] - 1, -absoluteSize.Y)
+                                local colorSize = colorRef.value:getValue().AbsoluteSize / 2
+                                return UDim2.new(value[1], -colorSize.X, value[2] - 1, -colorSize.Y)
                             end),
 
                             ImageColor3 = hsv:map(function(value)
                                 return Color3.fromHSV(table.unpack(value))
                             end),
-
-                            [Roact.Change.AbsoluteSize] = function(self: ImageLabel)
-                                colorCursorSize.value = self.AbsoluteSize
-                            end,
                         }
                     } :: any,
 
@@ -240,27 +234,29 @@ local function ColorPicker(props: props, hooks: RoactHooks.Hooks)
                         if input.UserInputType == Enum.UserInputType.MouseButton1 then
                             local connection; connection = input.Changed:Connect(function()
                                 if input.UserInputState == Enum.UserInputState.Change then
+                                    local colorSize = colorRef.value:getValue().AbsoluteSize
+
                                     local mousePosition = UserInputService:GetMouseLocation()
-                                    local position = mousePosition - colorSize.value
+                                    local position = mousePosition - colorSize
 
                                     if position.x < 0 then
                                         position.x = 0
                                     end
 
-                                    if position.x > colorSize.value.X then
-                                        position.x = colorSize.value.X
+                                    if position.x > colorSize.X then
+                                        position.x = colorSize.X
                                     end
 
                                     if position.y < 0 then
                                         position.y = 0
                                     end
 
-                                    if position.y > colorSize.value.Y then
-                                        position.y = colorSize.value.Y
+                                    if position.y > colorSize.Y then
+                                        position.y = colorSize.Y
                                     end
 
-                                    position.x = position.x / colorSize.value.X
-                                    position.y = position.y / colorSize.value.Y
+                                    position.x = position.x / colorSize.X
+                                    position.y = position.y / colorSize.Y
 
                                     updateHsv({ 1 - position.x, 1 - position.y, hsv:getValue()[3] })
                                     props.update(Color3.fromHSV(table.unpack(hsv:getValue())))
@@ -270,14 +266,6 @@ local function ColorPicker(props: props, hooks: RoactHooks.Hooks)
                                 end
                             end)
                         end
-                    end,
-
-                    [Roact.Change.AbsoluteSize] = function(self: ImageButton)
-                        colorSize.value = self.AbsoluteSize
-                    end,
-
-                    [Roact.Change.AbsolutePosition] = function(self: ImageButton)
-                        colorPosition.value = self.AbsolutePosition
                     end,
                 }, 
             },

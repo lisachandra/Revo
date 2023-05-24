@@ -21,7 +21,8 @@ type styles = {
 }
 
 local function Blur(props: props & internal, hooks: RoactHooks.Hooks)
-    local focused, updateFocus = hooks.useState(nil :: string?)
+    local focused: RoactBinding<string?>, updateFocus = hooks.useBinding(nil :: string?)
+    local clicked = hooks.useValue(false)
 
     local styles: any, api = RoactSpring.useSpring(hooks, function()
         return {
@@ -33,25 +34,22 @@ local function Blur(props: props & internal, hooks: RoactHooks.Hooks)
     local styles: styles = styles
 
     hooks.useEffect(function()
-        api.start({
-            transparency = focused and 0.5 or 1
-        })
-
         local connection; connection = RunService.Heartbeat:Connect(function()
-            local once: true?
+            local focused = focused:getValue()
             local changed = false; for key, opened in pairs(props.tips.value) do
                 if opened then
-                    if once then
-                        props.tips.value[key] = false
-                        changed = true
-                    elseif not focused then
-                        updateFocus(key)
+                    if not focused then
+                        if clicked.value then
+                            props.tips.value[key] = false
+                            clicked.value = false
+                            changed = true
+                        else
+                            updateFocus(key)
+                        end
                     elseif key ~= focused then
                         props.tips.value[key] = false
                         changed = true
                     end
-
-                    once = true
                 end
             end
 
@@ -64,17 +62,24 @@ local function Blur(props: props & internal, hooks: RoactHooks.Hooks)
             connection:Disconnect()
             connection = nil
         end
-    end, { focused })
+    end, {})
  
     return Roact.createElement(props.template, {
         BackgroundTransparency = styles.transparency,
-        Visible = focused and true or false,
+        Visible = focused:map(function(value)
+            api.start({
+                transparency = value and 0.5 or 1
+            })
+
+            return value and true or false
+        end),
 
         [Roact.Event.InputBegan] = function(_self: Frame, input: InputObject)
             if focused and input.UserInputType == Enum.UserInputType.MouseButton1 then
                 local connection; connection = input.Changed:Connect(function()
                     if input.UserInputState == Enum.UserInputState.End then
-                        updateFocus(nil :: any)
+                        clicked.value = true
+                        updateFocus(nil)
                         connection:Disconnect()
                         connection = nil :: any
                     end

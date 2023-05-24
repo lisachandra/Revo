@@ -30,7 +30,7 @@ type styles = {
 }
 
 local function Keybind(props: props, hooks: RoactHooks.Hooks)
-    local ref = hooks.useValue(Roact.createRef())
+    local ref = hooks.useValue(Roact.createRef() :: RoactRef<TextButton>)
 
     local keybind, updateKeybind = hooks.useState(props.initialValue :: keybind?)
 
@@ -49,7 +49,7 @@ local function Keybind(props: props, hooks: RoactHooks.Hooks)
         end
     end, { keybind })
 
-    return Roact.createElement(Templates.Toggle, {
+    return Roact.createElement(Templates.Keybind, {
         [Roact.Ref] = ref.value :: any,
 
         BackgroundColor3 = styles.background,
@@ -85,7 +85,7 @@ local function Keybind(props: props, hooks: RoactHooks.Hooks)
         end,
     }, {
         Ripple = RoactTemplate.wrapped(Ripple, {
-            ref = ref.value,
+            ref = ref.value :: any,
             theme = props.info.theme,
         }),
 

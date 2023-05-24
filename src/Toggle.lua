@@ -22,7 +22,7 @@ type styles = {
 }
 
 local function Toggle(props: props, hooks: RoactHooks.Hooks)
-    local ref = hooks.useValue(Roact.createRef())
+    local ref = hooks.useValue(Roact.createRef() :: RoactRef<TextButton>)
     local toggle = hooks.useValue(props.initialValue)
 
     local styles: any, api = RoactSpring.useSpring(hooks, function()
@@ -67,7 +67,7 @@ local function Toggle(props: props, hooks: RoactHooks.Hooks)
         end,
     }, {
         Ripple = RoactTemplate.wrapped(Ripple, {
-            ref = ref.value,
+            ref = ref.value :: any,
             theme = props.info.theme,
         }),
 

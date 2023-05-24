@@ -21,7 +21,7 @@ type styles = {
 }
 
 local function TextBox(props: props, hooks: RoactHooks.Hooks)
-    local ref = hooks.useValue(Roact.createRef())
+    local ref = hooks.useValue(Roact.createRef() :: RoactRef<TextButton>)
 
     local placeholder, updatePlaceholder = hooks.useState(props.initialValue)
 
@@ -38,7 +38,7 @@ local function TextBox(props: props, hooks: RoactHooks.Hooks)
         props.update(placeholder)
     end, { placeholder })
 
-    return Roact.createElement(Templates.Toggle, {
+    return Roact.createElement(Templates.TextBox, {
         [Roact.Ref] = ref.value :: any,
 
         BackgroundColor3 = styles.background,
@@ -61,7 +61,7 @@ local function TextBox(props: props, hooks: RoactHooks.Hooks)
         end,
     }, {
         Ripple = RoactTemplate.wrapped(Ripple, {
-            ref = ref.value,
+            ref = ref.value :: any,
             theme = props.info.theme,
         }),
 

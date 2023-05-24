@@ -97,15 +97,7 @@ local function Page(props: props & internal, hooks: RoactHooks.Hooks)
                 ),
 
                 CanvasSize = styles.canvasSize,
-            }, merge(elements, {
-                UIListLayout = {
-                    [Roact.Change.AbsoluteContentSize] = function(self: UIListLayout)
-                        api.start({
-                            canvasSize = UDim2.fromOffset(352, self.AbsoluteContentSize.Y),
-                        })
-                    end,
-                }
-            }))
+            }, elements)
         })
     })
 end

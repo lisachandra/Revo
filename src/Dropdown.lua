@@ -27,7 +27,6 @@ type styles = {
 local function Dropdown(props: props, hooks: RoactHooks.Hooks)
     local ref = hooks.useValue(Roact.createRef())
     local opened = hooks.useValue(false)
-    local absoluteContentSize = hooks.useValue(nil :: number?)
 
     local selected, updateSelected = hooks.useState(props.initialValue or props.info.name)
 
@@ -54,7 +53,7 @@ local function Dropdown(props: props, hooks: RoactHooks.Hooks)
         }))
     end
 
-    return Roact.createElement(Templates.Toggle, {
+    return Roact.createElement(Templates.Dropdown, {
         BackgroundColor3 = props.info.theme.background,
         LayoutOrder = props.info.order,
     }, merge(options, {
@@ -63,11 +62,13 @@ local function Dropdown(props: props, hooks: RoactHooks.Hooks)
             
             BackgroundColor3 = styles.background,
 
-            [Roact.Event.MouseButton1Click] = function(_self: Frame)
+            [Roact.Event.MouseButton1Click] = function(self: Frame & { UIListLayout: UIListLayout })
+                local absoluteContentSize = self.UIListLayout.AbsoluteContentSize
+
                 opened.value = not opened.value
 
                 api.start({
-                    canvasSize = UDim2.fromOffset(352, opened.value and absoluteContentSize.value or 33)
+                    canvasSize = UDim2.fromOffset(352, opened.value and absoluteContentSize.Y or 33)
                 })
             end,
             
@@ -108,12 +109,6 @@ local function Dropdown(props: props, hooks: RoactHooks.Hooks)
 
                 Icon = { ImageColor3 = props.info.theme.schemeColor },
             },
-        },
-
-        UIListLayout = {
-            [Roact.Change.AbsoluteContentSize] = function(self: UIListLayout)
-                absoluteContentSize.value = self.AbsoluteContentSize.Y
-            end,
         },
     }))
 end

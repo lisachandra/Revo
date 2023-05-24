@@ -28,7 +28,7 @@ local function Window(props: props, hooks: RoactHooks.Hooks)
     local _, render = hooks.useState(nil)
     
     local tips = hooks.useValue({} :: { [string]: boolean })
-    local ref = hooks.useValue(Roact.createRef())
+    local ref = hooks.useValue(Roact.createRef() :: RoactRef<Frame>)
     local dragConnection = hooks.useValue(nil :: RBXScriptConnection?)
 
     local styles: any, api = RoactSpring.useSpring(hooks, function()

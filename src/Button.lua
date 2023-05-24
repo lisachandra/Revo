@@ -31,7 +31,7 @@ local function Button(props: props, hooks: RoactHooks.Hooks)
 
     local styles: styles = styles
 
-    return Roact.createElement(Templates.Toggle, {
+    return Roact.createElement(Templates.Button, {
         [Roact.Ref] = ref.value :: any,
 
         BackgroundColor3 = styles.background,
