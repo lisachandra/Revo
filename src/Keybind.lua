@@ -48,13 +48,6 @@ local function Keybind(props: props, hooks: RoactHooks.Hooks)
 
         BackgroundColor3 = styles.background,
         LayoutOrder = props.info.order,
-        Text = keybind:map(function(value)
-            if value then
-                props.update(value)
-            end
-
-            return value and value.Name or ". . ."
-        end),
 
         [Roact.Event.MouseButton1Click] = function(_self: TextButton)
             updateKeybind(nil :: any)
@@ -95,6 +88,17 @@ local function Keybind(props: props, hooks: RoactHooks.Hooks)
             opened = props.info.tip.opened,
             update = props.info.tip.update,
         }),
+
+        Keybind = {
+            TextColor3 = props.info.theme.textColor,
+            Text = keybind:map(function(value)
+                if value then
+                    props.update(value)
+                end
+    
+                return value and value.Name or ". . ."
+            end),
+        },
 
         Name = {
             TextColor3 = props.info.theme.textColor,
