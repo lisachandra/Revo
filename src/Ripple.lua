@@ -71,9 +71,11 @@ local function Ripple(props: props & internal, hooks: RoactHooks.Hooks)
 
         if self.value:getValue() then
             local styles: any, api = RoactSpring.useSpring(hooks, function()
+                local position = mousePosition.value - self.value:getValue().AbsolutePosition
+
                 return {
                     transparency = 0.6,
-                    position = UDim2.new(mousePosition.value - self.value:getValue().AbsolutePosition),
+                    position = UDim2.fromOffset(position.X, position.Y),
                     size = UDim2.new(),
 
                     config = RoactSpring.config.stiff :: any,
