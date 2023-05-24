@@ -9,7 +9,7 @@ local function Label(props: props)
     return Roact.createElement(Templates.Label, {
         BackgroundColor3 = props.info.theme.schemeColor,
         TextColor3 = props.info.theme.textColor,
-        Text = props.info.name,
+        Text = props.info.description,
         LayoutOrder = props.info.order,
     })
 end

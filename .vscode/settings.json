@@ -4,6 +4,7 @@
         "D:\\Scripts\\utils.d.lua",
         "D:\\Scripts\\unc.d.lua",
         "D:\\Scripts\\roact.d.lua",
-        "D:\\Github\\Roblox\\Packages\\Revo\\loaded.d.lua"
+        "revo.d.lua",
+        "loaded.d.lua"
     ],
 }
