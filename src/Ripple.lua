@@ -41,7 +41,6 @@ local function Ripple(props: props & internal, hooks: RoactHooks.Hooks)
                 local connection; connection = button.MouseButton1Click:Connect(function()
                     print("adding ripple")
 
-                    local ripples = table.clone(ripples)
                     local element; element = Roact.createElement(Ripple :: any, {
                         size = sizeTarget.value,
                         template = props.template,
