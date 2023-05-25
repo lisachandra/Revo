@@ -32,8 +32,8 @@ end
 local function ColorPicker(props: props, hooks: RoactHooks.Hooks)
     local ref = hooks.useValue(Roact.createRef() :: RoactRef<TextButton>)
 
-    local colorRef = hooks.useValue(Roact.createRef() :: RoactRef<ImageButton>)
-    local opacityRef = hooks.useValue(Roact.createRef() :: RoactRef<ImageButton>)
+    local colorRef = hooks.useValue(Roact.createRef() :: RoactRef<ImageButton & { Cursor: ImageLabel }>)
+    local opacityRef = hooks.useValue(Roact.createRef() :: RoactRef<ImageButton & { Cursor: ImageLabel }>)
     
     local frames = hooks.useValue(0)
     local opened = hooks.useValue(false)
@@ -177,15 +177,15 @@ local function ColorPicker(props: props, hooks: RoactHooks.Hooks)
                     [Roact.Children] = {
                         Cursor = {
                             Position = hsv:map(function(value)
-                                local color = colorRef.value:getValue(); if color then
-                                    return UDim2.new(0.5, 0, value[3] - 1, -color.AbsoluteSize.Y / 2)
+                                local opacity = opacityRef.value:getValue(); if opacity then
+                                    return UDim2.new(0.5, 0, 1 - value[3], -opacity.Cursor.AbsoluteSize.Y / 2)
                                 end
 
                                 return UDim2.new()
                             end),
 
                             ImageColor3 = hsv:map(function(value)
-                                return Color3.fromHSV(0, 0, 1 - value[3])
+                                return Color3.fromHSV(0, 0, value[3])
                             end),
                         }
                     } :: any,
@@ -214,9 +214,9 @@ local function ColorPicker(props: props, hooks: RoactHooks.Hooks)
                                     y = opacitySize.Y
                                 end
 
-                                y = y / opacitySize.Y
+                                y = 
 
-                                updateHsv({ currentHsv[1], currentHsv[2], 1 - y })
+                                updateHsv({ currentHsv[1], currentHsv[2], 1 - (y / opacitySize.Y) })
                                 props.update(Color3.fromHSV(table.unpack(hsv:getValue())))
                             end)
                         end
@@ -230,8 +230,8 @@ local function ColorPicker(props: props, hooks: RoactHooks.Hooks)
                         Cursor = {
                             Position = hsv:map(function(value)
                                 local color = colorRef.value:getValue(); if color then
-                                    local colorSize = color.AbsoluteSize / 2
-                                    return UDim2.new(value[1], -colorSize.X, value[2] - 1, -colorSize.Y)
+                                    local cursorSize = color.Cursor.AbsoluteSize / 2
+                                    return UDim2.new(1 - value[1], -cursorSize.X, 1 - value[2], -cursorSize.Y)
                                 end
 
                                 return UDim2.new()
@@ -273,10 +273,7 @@ local function ColorPicker(props: props, hooks: RoactHooks.Hooks)
                                     y = colorSize.Y
                                 end
 
-                                x = x / colorSize.X
-                                y = y / colorSize.Y
-
-                                updateHsv({ 1 - x, 1 - y, hsv:getValue()[3] })
+                                updateHsv({ 1 - (x / colorSize.X), 1 - (y / colorSize.Y), hsv:getValue()[3] })
                                 props.update(Color3.fromHSV(table.unpack(hsv:getValue())))
                             end)
                         end
