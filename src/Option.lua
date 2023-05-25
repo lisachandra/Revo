@@ -25,7 +25,7 @@ local function Option(props: props, hooks: RoactHooks.Hooks)
 
     local styles: any, api = RoactSpring.useSpring(hooks, function()
         return {
-            background = props.selected:getValue() and props.theme.schemeColor or props.theme.elementColor,
+            background = props.selected:getValue() == props.option and props.theme.schemeColor or props.theme.elementColor,
             config = RoactSpring.config.stiff :: any,
         }
     end)
@@ -50,7 +50,7 @@ local function Option(props: props, hooks: RoactHooks.Hooks)
         end,
 
         [Roact.Event.MouseEnter] = function(_self: TextButton)
-            local color = props.selected:getValue() and props.theme.schemeColor or props.theme.elementColor
+            local color = props.selected:getValue() == props.option and props.theme.schemeColor or props.theme.elementColor
 
             api.start({
                 background = Color3.fromRGB(
@@ -63,7 +63,7 @@ local function Option(props: props, hooks: RoactHooks.Hooks)
 
         [Roact.Event.MouseLeave] = function(_self: TextButton)
             api.start({
-                background = props.selected:getValue() and props.theme.schemeColor or props.theme.elementColor,
+                background = props.selected:getValue() == props.option and props.theme.schemeColor or props.theme.elementColor,
             }) 
         end,
     }, {
