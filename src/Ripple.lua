@@ -1,3 +1,4 @@
+local GuiService = cloneref(game:GetService("GuiService"))
 local UserInputService = cloneref(game:GetService("UserInputService"))
 
 local Roact: Roact = require(script.Parent.Parent.Roact) :: any
@@ -67,7 +68,7 @@ local function Ripple(props: props & internal, hooks: RoactHooks.Hooks)
         return Roact.createFragment(ripples)
     else
         local self = hooks.useValue(Roact.createRef() :: RoactRef<ImageLabel>)
-        local mousePosition = hooks.useValue(UserInputService:GetMouseLocation())
+        local mousePosition = hooks.useValue(UserInputService:GetMouseLocation() + GuiService:GetGuiInset())
 
         if self.value:getValue() then
             local styles: any, api = RoactSpring.useSpring(hooks, function()
