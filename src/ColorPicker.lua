@@ -257,26 +257,26 @@ local function ColorPicker(props: props, hooks: RoactHooks.Hooks)
                                 local mousePosition = UserInputService:GetMouseLocation()
                                 local position = mousePosition - colorSize
 
-                                if position.x < 0 then
-                                    position.x = 0
+                                if position.X < 0 then
+                                    position.X = 0
                                 end
 
-                                if position.x > colorSize.X then
-                                    position.x = colorSize.X
+                                if position.X > colorSize.X then
+                                    position.X = colorSize.X
                                 end
 
-                                if position.y < 0 then
-                                    position.y = 0
+                                if position.Y < 0 then
+                                    position.Y = 0
                                 end
 
-                                if position.y > colorSize.Y then
-                                    position.y = colorSize.Y
+                                if position.Y > colorSize.Y then
+                                    position.Y = colorSize.Y
                                 end
 
-                                position.x = position.x / colorSize.X
-                                position.y = position.y / colorSize.Y
+                                position.X = position.X / colorSize.X
+                                position.Y = position.Y / colorSize.Y
 
-                                updateHsv({ 1 - position.x, 1 - position.y, hsv:getValue()[3] })
+                                updateHsv({ 1 - position.X, 1 - position.Y, hsv:getValue()[3] })
                                 props.update(Color3.fromHSV(table.unpack(hsv:getValue())))
                             end)
                         end
