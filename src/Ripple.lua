@@ -1,4 +1,5 @@
 local GuiService = cloneref(game:GetService("GuiService"))
+local HttpService = cloneref(game:GetService("HttpService"))
 local UserInputService = cloneref(game:GetService("UserInputService"))
 
 local Roact: Roact = require(script.Parent.Parent.Roact) :: any
@@ -42,17 +43,19 @@ local function Ripple(props: props & internal, hooks: RoactHooks.Hooks)
                 local connection; connection = button.MouseButton1Click:Connect(function()
                     print("adding ripple")
 
+                    local key = HttpService:GenerateGUID()
                     local element; element = Roact.createElement(Ripple :: any, {
                         size = sizeTarget.value,
                         template = props.template,
                         theme = props.theme,
     
                         finished = function()
-                            table.remove(ripples.value, table.find(ripples.value, element))
+                            print("removing ripple")
+                            ripples.value[key] = nil
                         end,
                     })
     
-                    table.insert(ripples.value, element)
+                    ripples.value[key] = element
                     render()
                 end)
     
