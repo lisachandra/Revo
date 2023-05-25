@@ -39,6 +39,8 @@ local function Ripple(props: props & internal, hooks: RoactHooks.Hooks)
         hooks.useEffect(function()
             if button then
                 local connection; connection = button.MouseButton1Click:Connect(function()
+                    print("adding ripple")
+
                     local ripples = table.clone(ripples)
                     local element; element = Roact.createElement(Ripple :: any, {
                         size = sizeTarget.value,
@@ -73,6 +75,7 @@ local function Ripple(props: props & internal, hooks: RoactHooks.Hooks)
         local _, render = hooks.useState(nil :: any)
 
         hooks.useEffect(function()
+            print("rerendering ripple")
             render()
         end, {})
 
@@ -92,6 +95,8 @@ local function Ripple(props: props & internal, hooks: RoactHooks.Hooks)
             local styles: styles = styles
 
             hooks.useEffect(function()
+                print("starting ripple")
+
                 api.start({
                     transparency = 1,
                     position = UDim2.new(0.5, -(props.size / 2), 0.5, -(props.size / 2)),
