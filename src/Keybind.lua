@@ -58,13 +58,16 @@ local function Keybind(props: props, hooks: RoactHooks.Hooks)
         LayoutOrder = props.info.order,
 
         [Roact.Event.MouseButton1Click] = function(_self: TextButton)
+            local old = keybind:getValue()
+
             updateKeybind(nil :: any)
 
             while true do
-                local input = UserInputService.InputEnded:Wait(); if 
-                    (input.KeyCode or input.UserInputType) and
-                    not table.find(ESCAPE_INPUTS, input.KeyCode or input.UserInputType)
-                then
+                local input = UserInputService.InputEnded:Wait(); if input.KeyCode or input.UserInputType then
+                    if table.find(ESCAPE_INPUTS, input.KeyCode or input.UserInputType) then
+                        updateKeybind(old); break
+                    end
+                    
                     updateKeybind(input.KeyCode or input.UserInputType); break
                 end
             end
