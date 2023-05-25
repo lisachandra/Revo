@@ -131,7 +131,7 @@ local function ColorPicker(props: props, hooks: RoactHooks.Hooks)
                 Rainbow = {
                     [Roact.Children] = {
                         Fill = {
-                            [Roact.Event.InputBegan] = function(_self: TextButton, input: InputObject)
+                            [Roact.Event.InputBegan] = function(_self: ImageLabel, input: InputObject)
                                 if input.UserInputType ~= Enum.UserInputType.MouseButton1 then
                                     return
                                 end
@@ -192,31 +192,32 @@ local function ColorPicker(props: props, hooks: RoactHooks.Hooks)
 
                     [Roact.Event.InputBegan] = function(_self: ImageButton, input: InputObject)
                         if input.UserInputType == Enum.UserInputType.MouseButton1 then
-                            local connection; connection = input.Changed:Connect(function()
-                                if input.UserInputState == Enum.UserInputState.Change then
-                                    local colorSize = colorRef.value:getValue().AbsoluteSize
-                                    local opacitySize = opacityRef.value:getValue().AbsoluteSize
-
-                                    local mousePosition = UserInputService:GetMouseLocation()
-                                    local y = mousePosition.Y - colorSize.Y
-                                    local currentHsv = hsv:getValue()
-
-                                    if y < 0 then
-                                        y = 0
-                                    end
-
-                                    if y > opacitySize.Y then
-                                        y = opacitySize.Y
-                                    end
-
-                                    y = y / opacitySize.Y
-
-                                    updateHsv({ currentHsv[1], currentHsv[2], 1 - y })
-                                    props.update(Color3.fromHSV(table.unpack(hsv:getValue())))
-                                elseif input.UserInputState == Enum.UserInputState.End then
+                            local connection; connection = RunService.RenderStepped:Connect(function()
+                                if input.UserInputState == Enum.UserInputState.End then
                                     connection:Disconnect()
                                     connection = nil :: any
+                                    return
                                 end
+
+                                local colorSize = colorRef.value:getValue().AbsoluteSize
+                                local opacitySize = opacityRef.value:getValue().AbsoluteSize
+
+                                local mousePosition = UserInputService:GetMouseLocation()
+                                local y = mousePosition.Y - colorSize.Y
+                                local currentHsv = hsv:getValue()
+
+                                if y < 0 then
+                                    y = 0
+                                end
+
+                                if y > opacitySize.Y then
+                                    y = opacitySize.Y
+                                end
+
+                                y = y / opacitySize.Y
+
+                                updateHsv({ currentHsv[1], currentHsv[2], 1 - y })
+                                props.update(Color3.fromHSV(table.unpack(hsv:getValue())))
                             end)
                         end
                     end,
@@ -244,38 +245,39 @@ local function ColorPicker(props: props, hooks: RoactHooks.Hooks)
 
                     [Roact.Event.InputBegan] = function(_self: ImageButton, input: InputObject)
                         if input.UserInputType == Enum.UserInputType.MouseButton1 then
-                            local connection; connection = input.Changed:Connect(function()
-                                if input.UserInputState == Enum.UserInputState.Change then
-                                    local colorSize = colorRef.value:getValue().AbsoluteSize
-
-                                    local mousePosition = UserInputService:GetMouseLocation()
-                                    local position = mousePosition - colorSize
-
-                                    if position.x < 0 then
-                                        position.x = 0
-                                    end
-
-                                    if position.x > colorSize.X then
-                                        position.x = colorSize.X
-                                    end
-
-                                    if position.y < 0 then
-                                        position.y = 0
-                                    end
-
-                                    if position.y > colorSize.Y then
-                                        position.y = colorSize.Y
-                                    end
-
-                                    position.x = position.x / colorSize.X
-                                    position.y = position.y / colorSize.Y
-
-                                    updateHsv({ 1 - position.x, 1 - position.y, hsv:getValue()[3] })
-                                    props.update(Color3.fromHSV(table.unpack(hsv:getValue())))
-                                elseif input.UserInputState == Enum.UserInputState.End then
+                            local connection; connection = RunService.RenderStepped:Connect(function()
+                                if input.UserInputState == Enum.UserInputState.End then
                                     connection:Disconnect()
                                     connection = nil :: any
+                                    return
                                 end
+
+                                local colorSize = colorRef.value:getValue().AbsoluteSize
+
+                                local mousePosition = UserInputService:GetMouseLocation()
+                                local position = mousePosition - colorSize
+
+                                if position.x < 0 then
+                                    position.x = 0
+                                end
+
+                                if position.x > colorSize.X then
+                                    position.x = colorSize.X
+                                end
+
+                                if position.y < 0 then
+                                    position.y = 0
+                                end
+
+                                if position.y > colorSize.Y then
+                                    position.y = colorSize.Y
+                                end
+
+                                position.x = position.x / colorSize.X
+                                position.y = position.y / colorSize.Y
+
+                                updateHsv({ 1 - position.x, 1 - position.y, hsv:getValue()[3] })
+                                props.update(Color3.fromHSV(table.unpack(hsv:getValue())))
                             end)
                         end
                     end,
