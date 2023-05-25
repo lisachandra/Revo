@@ -63,7 +63,7 @@ local function Keybind(props: props, hooks: RoactHooks.Hooks)
             updateKeybind(nil :: any)
 
             while true do
-                local input = UserInputService.InputEnded:Wait(); if input.KeyCode or input.UserInputType then
+                local input = UserInputService.InputBegan:Wait(); if input.KeyCode or input.UserInputType then
                     if table.find(ESCAPE_INPUTS, input.KeyCode or input.UserInputType) then
                         updateKeybind(old); break
                     end
