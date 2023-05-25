@@ -28,7 +28,8 @@ local function Ripple(props: props & internal, hooks: RoactHooks.Hooks)
     if props.ref then
         local button = props.ref:getValue()
         
-        local ripples, updateRipples = hooks.useState({})
+        local _, render = hooks.useState(nil :: any)
+        local ripples = hooks.useValue({})
         local sizeTarget = hooks.useValue(button and (
             if button.AbsoluteSize.X >= button.AbsoluteSize.Y then
                 button.AbsoluteSize.X * 1.5
@@ -47,12 +48,12 @@ local function Ripple(props: props & internal, hooks: RoactHooks.Hooks)
                         theme = props.theme,
     
                         finished = function()
-                            table.remove(ripples, table.find(ripples, element))
+                            table.remove(ripples.value, table.find(ripples.value, element))
                         end,
                     })
     
-                    table.insert(ripples, element)
-                    updateRipples(ripples)
+                    table.insert(ripples.value, element)
+                    render()
                 end)
     
                 return function()
@@ -60,13 +61,13 @@ local function Ripple(props: props & internal, hooks: RoactHooks.Hooks)
                     connection = nil :: any
                 end :: any
             else
-                updateRipples(ripples)
+                render()
             end
 
             return
         end, { button and true or false })
 
-        return Roact.createFragment(ripples)
+        return Roact.createFragment(ripples.value)
     else
         local self = hooks.useValue(Roact.createRef() :: RoactRef<ImageLabel>)
         local mousePosition = hooks.useValue(UserInputService:GetMouseLocation() - Vector2.new(0, GuiService:GetGuiInset().Y))
