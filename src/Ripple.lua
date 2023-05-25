@@ -68,7 +68,7 @@ local function Ripple(props: props & internal, hooks: RoactHooks.Hooks)
         return Roact.createFragment(ripples)
     else
         local self = hooks.useValue(Roact.createRef() :: RoactRef<ImageLabel>)
-        local mousePosition = hooks.useValue(UserInputService:GetMouseLocation() + GuiService:GetGuiInset())
+        local mousePosition = hooks.useValue(UserInputService:GetMouseLocation() - GuiService:GetGuiInset())
 
         if self.value:getValue() then
             local styles: any, api = RoactSpring.useSpring(hooks, function()

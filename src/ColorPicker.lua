@@ -207,7 +207,7 @@ local function ColorPicker(props: props, hooks: RoactHooks.Hooks)
                                 local colorSize = colorRef.value:getValue().AbsoluteSize
                                 local opacitySize = opacityRef.value:getValue().AbsoluteSize
 
-                                local mousePosition = UserInputService:GetMouseLocation() + GuiService:GetGuiInset()
+                                local mousePosition = UserInputService:GetMouseLocation() - GuiService:GetGuiInset()
                                 local y = mousePosition.Y - colorSize.Y
                                 local currentHsv = hsv:getValue()
 
@@ -258,7 +258,7 @@ local function ColorPicker(props: props, hooks: RoactHooks.Hooks)
                                 end
 
                                 local colorSize = colorRef.value:getValue().AbsoluteSize
-                                local mousePosition = UserInputService:GetMouseLocation() + GuiService:GetGuiInset()
+                                local mousePosition = UserInputService:GetMouseLocation() - GuiService:GetGuiInset()
                                 local x, y = mousePosition.X - colorSize.X, mousePosition.Y - colorSize.Y
 
                                 if x < 0 then
