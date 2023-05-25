@@ -67,33 +67,33 @@ local function ColorPicker(props: props, hooks: RoactHooks.Hooks)
 
         Size = styles.canvasSize,
         LayoutOrder = props.info.order,
-        
-        [Roact.Event.MouseButton1Click] = function(_self: TextButton)
-            opened.value = not opened.value
-
-            api.start({
-                canvasSize = opened.value and UDim2.fromOffset(352, 141) or UDim2.fromOffset(352, 33),
-            })
-        end,
-
-        [Roact.Event.MouseEnter] = function(_self: TextButton)
-            api.start({
-                background = Color3.fromRGB(
-                    (props.info.theme.elementColor.R * 255) + 8,
-                    (props.info.theme.elementColor.G * 255) + 9,
-                    (props.info.theme.elementColor.B * 255) + 10
-                ),
-            }) 
-        end,
-
-        [Roact.Event.MouseLeave] = function(_self: TextButton)
-            api.start({
-                background = props.info.theme.elementColor,
-            }) 
-        end,
     }, {
         Header = {
             BackgroundColor3 = styles.background,
+
+            [Roact.Event.MouseButton1Click] = function(_self: TextButton)
+                opened.value = not opened.value
+
+                api.start({
+                    canvasSize = opened.value and UDim2.fromOffset(352, 141) or UDim2.fromOffset(352, 33),
+                })
+            end :: any,
+
+            [Roact.Event.MouseEnter] = function(_self: TextButton)
+                api.start({
+                    background = Color3.fromRGB(
+                        (props.info.theme.elementColor.R * 255) + 8,
+                        (props.info.theme.elementColor.G * 255) + 9,
+                        (props.info.theme.elementColor.B * 255) + 10
+                    ),
+                }) 
+            end,
+    
+            [Roact.Event.MouseLeave] = function(_self: TextButton)
+                api.start({
+                    background = props.info.theme.elementColor,
+                }) 
+            end,
 
             [Roact.Children] = {
                 Ripple = RoactTemplate.wrapped(Ripple, {
