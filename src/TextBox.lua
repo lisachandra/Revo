@@ -33,6 +33,10 @@ local function TextBox(props: props, hooks: RoactHooks.Hooks)
 
     local styles: styles = styles
 
+    hooks.useEffect(function()
+        updatePlaceholder(props.initialValue)
+    end, { props.initialValue })
+
     return Roact.createElement(Templates.TextBox, {
         [Roact.Ref] = ref.value :: any,
 

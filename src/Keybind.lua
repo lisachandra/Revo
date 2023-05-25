@@ -47,6 +47,10 @@ local function Keybind(props: props, hooks: RoactHooks.Hooks)
 
     local styles: styles = styles
 
+    hooks.useEffect(function()
+        updateKeybind(props.initialValue)
+    end, { props.initialValue })
+
     return Roact.createElement(Templates.Keybind, {
         [Roact.Ref] = ref.value :: any,
 

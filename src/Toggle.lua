@@ -35,6 +35,10 @@ local function Toggle(props: props, hooks: RoactHooks.Hooks)
 
     local styles: styles = styles
 
+    hooks.useEffect(function()
+        toggle.value = props.initialValue
+    end, { props.initialValue })
+
     return Roact.createElement(Templates.Toggle, {
         [Roact.Ref] = ref.value :: any,
 

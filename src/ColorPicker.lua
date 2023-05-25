@@ -55,6 +55,10 @@ local function ColorPicker(props: props, hooks: RoactHooks.Hooks)
     local styles: styles = styles
 
     hooks.useEffect(function()
+        updateHsv({ Color3.toHSV(props.initialValue) })
+    end, { props.initialValue })
+
+    hooks.useEffect(function()
         return function()
             if rainbowConnection.value then
                 rainbowConnection.value:Disconnect()

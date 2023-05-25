@@ -41,11 +41,18 @@ local function Dropdown(props: props, hooks: RoactHooks.Hooks)
 
     local styles: styles = styles
 
+    hooks.useEffect(function()
+        if props.initialValue then
+            updateSelected(props.initialValue)
+        end
+    end, { props.initialValue })
+
     local options = {}; for index, option in ipairs(props.options) do
         table.insert(options, Roact.createElement(Option, {
             theme = props.info.theme,
             option = option,
             order = index,
+            selected = selected,
             select = updateSelected,
         }))
     end

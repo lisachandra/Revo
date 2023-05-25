@@ -12,6 +12,7 @@ type props = {
     theme: Types.theme,
     option: string,
     order: number,
+    selected: RoactBinding<string>,
     select: (option: string) -> (),
 }
 
@@ -24,7 +25,7 @@ local function Option(props: props, hooks: RoactHooks.Hooks)
 
     local styles: any, api = RoactSpring.useSpring(hooks, function()
         return {
-            background = props.theme.background,
+            background = props.selected:getValue() and props.theme.schemeColor or props.theme.elementColor,
             config = RoactSpring.config.stiff :: any,
         }
     end)
@@ -40,27 +41,29 @@ local function Option(props: props, hooks: RoactHooks.Hooks)
             (props.theme.textColor.B * 255) - 6
         ),
 
-        BackgroundColor3 = styles.background,
         LayoutOrder = props.order,
         Text = "  " .. props.option,
+        BackgroundColor3 = styles.background,
 
         [Roact.Event.MouseButton1Click] = function(_self: TextButton)
             props.select(props.option)
         end,
 
         [Roact.Event.MouseEnter] = function(_self: TextButton)
-           api.start({
+            local color = props.selected:getValue() and props.theme.schemeColor or props.theme.elementColor
+
+            api.start({
                 background = Color3.fromRGB(
-                    (props.theme.elementColor.R * 255) + 8,
-                    (props.theme.elementColor.G * 255) + 9,
-                    (props.theme.elementColor.B * 255) + 10
+                    (color.R * 255) + 8,
+                    (color.G * 255) + 9,
+                    (color.B * 255) + 10
                 ),
            }) 
         end,
 
         [Roact.Event.MouseLeave] = function(_self: TextButton)
             api.start({
-                background = props.theme.elementColor,
+                background = props.selected:getValue() and props.theme.schemeColor or props.theme.elementColor,
             }) 
         end,
     }, {
