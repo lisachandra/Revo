@@ -30,19 +30,19 @@ local function Ripple(props: props & internal, hooks: RoactHooks.Hooks)
         local button = props.ref:getValue()
         
         local _, render = hooks.useState(nil :: any)
+        local sizeTarget = hooks.useValue(nil :: number?)
         local ripples = hooks.useValue({})
-        local sizeTarget = hooks.useValue(button and (
-            if button.AbsoluteSize.X >= button.AbsoluteSize.Y then
-                button.AbsoluteSize.X * 1.5
-            else
-                button.AbsoluteSize.Y * 1.5
-        ) or 0)
 
         hooks.useEffect(function()
             if button then
-                local connection; connection = button.MouseButton1Click:Connect(function()
-                    print("adding ripple")
+                sizeTarget.value = sizeTarget.value or (
+                    if button.AbsoluteSize.X >= button.AbsoluteSize.Y then
+                        button.AbsoluteSize.X * 1.5
+                    else
+                        button.AbsoluteSize.Y * 1.5
+                )
 
+                local connection; connection = button.MouseButton1Click:Connect(function()
                     local key = HttpService:GenerateGUID()
                     local element; element = Roact.createElement(Ripple :: any, {
                         size = sizeTarget.value,
@@ -50,7 +50,6 @@ local function Ripple(props: props & internal, hooks: RoactHooks.Hooks)
                         theme = props.theme,
     
                         finished = function()
-                            print("removing ripple")
                             ripples.value[key] = nil
                         end,
                     })
@@ -78,7 +77,6 @@ local function Ripple(props: props & internal, hooks: RoactHooks.Hooks)
         local _, render = hooks.useState(nil :: any)
 
         hooks.useEffect(function()
-            print("rerendering ripple")
             render()
         end, {})
 
@@ -98,8 +96,6 @@ local function Ripple(props: props & internal, hooks: RoactHooks.Hooks)
             local styles: styles = styles
 
             hooks.useEffect(function()
-                print("starting ripple")
-
                 api.start({
                     transparency = 1,
                     position = UDim2.new(0.5, -(props.size / 2), 0.5, -(props.size / 2)),
