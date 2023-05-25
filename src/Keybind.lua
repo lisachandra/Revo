@@ -11,10 +11,13 @@ local Types = require(script.Parent.Types)
 local Ripple = require(script.Parent.Ripple)
 local Tip = require(script.Parent.Tip)
 
-local ESCAPE_INPUTS: { any } = {
+local ESCAPE_INPUTS: { keybind } = {
     Enum.KeyCode.Escape,
     Enum.KeyCode.Unknown,
     Enum.UserInputType.MouseButton1,
+    Enum.UserInputType.None,
+    Enum.UserInputType.Focus,
+    Enum.UserInputType.MouseWheel,
 }
 
 type keybind = Enum.KeyCode | Enum.UserInputType
@@ -55,10 +58,10 @@ local function Keybind(props: props, hooks: RoactHooks.Hooks)
 
             while true do
                 local input = UserInputService.InputEnded:Wait(); if 
-                    (input.UserInputType or input.KeyCode) and
-                    not table.find(ESCAPE_INPUTS, input.UserInputType or input.KeyCode)
+                    (input.KeyCode or input.UserInputType) and
+                    not table.find(ESCAPE_INPUTS, input.KeyCode or input.UserInputType)
                 then
-                    updateKeybind(input.UserInputType or input.KeyCode); break
+                    updateKeybind(input.KeyCode or input.UserInputType); break
                 end
             end
         end,
