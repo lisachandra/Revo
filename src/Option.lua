@@ -41,7 +41,14 @@ local function Option(props: props, hooks: RoactHooks.Hooks)
             (props.theme.textColor.B * 255) - 6
         ),
 
-        LayoutOrder = props.order,
+        LayoutOrder = props.selected:map(function(value)
+            api.start({
+                background = value == props.option and props.theme.schemeColor or props.theme.elementColor,  
+            })
+
+            return props.order
+        end),
+
         Text = "  " .. props.option,
         BackgroundColor3 = styles.background,
 
