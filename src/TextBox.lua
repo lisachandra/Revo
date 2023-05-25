@@ -56,11 +56,6 @@ local function TextBox(props: props, hooks: RoactHooks.Hooks)
             }) 
         end,
     }, {
-        Ripple = RoactTemplate.wrapped(Ripple, {
-            ref = ref.value :: any,
-            theme = props.info.theme,
-        }),
-
         Tip = RoactTemplate.wrapped(Tip, {
             ref = props.info.ref,
             description = props.info.description or "",

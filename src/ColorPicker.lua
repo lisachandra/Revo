@@ -255,28 +255,28 @@ local function ColorPicker(props: props, hooks: RoactHooks.Hooks)
                                 local colorSize = colorRef.value:getValue().AbsoluteSize
 
                                 local mousePosition = UserInputService:GetMouseLocation()
-                                local position = mousePosition - colorSize
+                                local x, y = mousePosition.X - colorSize.X, mousePosition.Y - colorSize.Y
 
-                                if position.X < 0 then
-                                    position.X = 0
+                                if x < 0 then
+                                    x = 0
                                 end
 
-                                if position.X > colorSize.X then
-                                    position.X = colorSize.X
+                                if x > colorSize.X then
+                                    x = colorSize.X
                                 end
 
-                                if position.Y < 0 then
-                                    position.Y = 0
+                                if y < 0 then
+                                    y = 0
                                 end
 
-                                if position.Y > colorSize.Y then
-                                    position.Y = colorSize.Y
+                                if y > colorSize.Y then
+                                    y = colorSize.Y
                                 end
 
-                                position.X = position.X / colorSize.X
-                                position.Y = position.Y / colorSize.Y
+                                x = x / colorSize.X
+                                y = y / colorSize.Y
 
-                                updateHsv({ 1 - position.X, 1 - position.Y, hsv:getValue()[3] })
+                                updateHsv({ 1 - x, 1 - y, hsv:getValue()[3] })
                                 props.update(Color3.fromHSV(table.unpack(hsv:getValue())))
                             end)
                         end
