@@ -101,7 +101,7 @@ local function Window(props: props, hooks: RoactHooks.Hooks)
             [Roact.Event.InputBegan] = function(_self: Frame, input: InputObject)
                 if input.UserInputType == Enum.UserInputType.MouseButton1 and not dragConnection.value then
                     dragConnection.value = RunService.Heartbeat:Connect(function()
-                        local mousePos = UserInputService:GetMouseLocation() - GuiService:GetGuiInset()
+                        local mousePos = UserInputService:GetMouseLocation() - Vector2.new(0, GuiService:GetGuiInset().Y)
 
                         api.start({
                             position = UDim2.fromOffset(mousePos.X, mousePos.Y),
