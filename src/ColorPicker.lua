@@ -63,12 +63,12 @@ local function ColorPicker(props: props, hooks: RoactHooks.Hooks)
     end, {})
 
     return Roact.createElement(Templates.ColorPicker, {
-        [Roact.Ref] = ref.value :: any,
-
         Size = styles.canvasSize,
         LayoutOrder = props.info.order,
     }, {
         Header = {
+            [Roact.Ref] = ref.value :: any,
+
             BackgroundColor3 = styles.background,
 
             [Roact.Event.MouseButton1Click] = function(_self: TextButton)
