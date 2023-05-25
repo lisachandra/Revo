@@ -204,20 +204,20 @@ local function ColorPicker(props: props, hooks: RoactHooks.Hooks)
                                     return
                                 end
 
-                                local opacitySize = opacityRef.value:getValue().AbsoluteSize
+                                local opacity = opacityRef.value:getValue()
                                 local mousePosition = UserInputService:GetMouseLocation() - GuiService:GetGuiInset()
-                                local y = mousePosition.Y - opacitySize.Y
+                                local y = mousePosition.Y - opacity.AbsolutePosition.Y
                                 local currentHsv = hsv:getValue()
 
                                 if y < 0 then
                                     y = 0
                                 end
 
-                                if y > opacitySize.Y then
-                                    y = opacitySize.Y
+                                if y > opacity.AbsoluteSize.Y then
+                                    y = opacity.AbsoluteSize.Y
                                 end
 
-                                updateHsv({ currentHsv[1], currentHsv[2], 1 - (y / opacitySize.Y) })
+                                updateHsv({ currentHsv[1], currentHsv[2], 1 - (y / opacity.AbsoluteSize.Y) })
                                 props.update(Color3.fromHSV(table.unpack(hsv:getValue())))
                             end)
                         end
@@ -253,27 +253,27 @@ local function ColorPicker(props: props, hooks: RoactHooks.Hooks)
                                     return
                                 end
 
-                                local colorSize = colorRef.value:getValue().AbsoluteSize
+                                local color = colorRef.value:getValue()
                                 local mousePosition = UserInputService:GetMouseLocation() - GuiService:GetGuiInset()
-                                local x, y = mousePosition.X - colorSize.X, mousePosition.Y - colorSize.Y
+                                local x, y = mousePosition.X - color.AbsolutePosition.X, mousePosition.Y - color.AbsolutePosition.Y
 
                                 if x < 0 then
                                     x = 0
                                 end
 
-                                if x > colorSize.X then
-                                    x = colorSize.X
+                                if x > color.AbsoluteSize.X then
+                                    x = color.AbsoluteSize.X
                                 end
 
                                 if y < 0 then
                                     y = 0
                                 end
 
-                                if y > colorSize.Y then
-                                    y = colorSize.Y
+                                if y > color.AbsoluteSize.Y then
+                                    y = color.AbsoluteSize.Y
                                 end
 
-                                updateHsv({ 1 - (x / colorSize.X), 1 - (y / colorSize.Y), hsv:getValue()[3] })
+                                updateHsv({ 1 - (x / color.AbsoluteSize.X), 1 - (y / color.AbsoluteSize.Y), hsv:getValue()[3] })
                                 props.update(Color3.fromHSV(table.unpack(hsv:getValue())))
                             end)
                         end
