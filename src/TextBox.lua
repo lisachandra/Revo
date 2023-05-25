@@ -6,7 +6,6 @@ local RoactTemplate = require(script.Parent.RoactTemplate)
 local Templates = require(script.Parent.Templates)
 local Types = require(script.Parent.Types)
 
-local Ripple = require(script.Parent.Ripple)
 local Tip = require(script.Parent.Tip)
 
 type props = {

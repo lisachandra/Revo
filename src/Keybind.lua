@@ -53,11 +53,13 @@ local function Keybind(props: props, hooks: RoactHooks.Hooks)
         [Roact.Event.MouseButton1Click] = function(_self: TextButton)
             updateKeybind(nil :: any)
 
-            local input = UserInputService.InputEnded:Wait(); if 
-                (input.UserInputType or input.KeyCode) and
-                not table.find(ESCAPE_INPUTS, input.UserInputType or input.KeyCode)
-            then
-                updateKeybind(input.KeyCode or input.UserInputType)
+            while true do
+                local input = UserInputService.InputEnded:Wait(); if 
+                    (input.UserInputType or input.KeyCode) and
+                    not table.find(ESCAPE_INPUTS, input.UserInputType or input.KeyCode)
+                then
+                    updateKeybind(input.UserInputType or input.KeyCode); break
+                end
             end
         end,
 
