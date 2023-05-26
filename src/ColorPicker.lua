@@ -13,6 +13,11 @@ local Types = require(script.Parent.Types)
 local Ripple = require(script.Parent.Ripple)
 local Tip = require(script.Parent.Tip)
 
+local function round(num: number, dp: number)
+    local mult = 10 ^ (dp or 0)
+    return math.floor((num * mult) + 0.5) / mult
+end
+
 type props = {
     info: Types.info,
     initialValue: Color3,
@@ -149,7 +154,7 @@ local function ColorPicker(props: props, hooks: RoactHooks.Hooks)
                                     Text = hsv:map(function(value)
                                         local color = Color3.fromHSV(table.unpack(value))
 
-                                        return tostring(color.R)
+                                        return tostring(round(color.R * 255, 2))
                                     end),
 
                                     [Roact.Event.FocusLost] = function(self: TextBox, enterPressed: boolean)
@@ -182,7 +187,7 @@ local function ColorPicker(props: props, hooks: RoactHooks.Hooks)
                                     Text = hsv:map(function(value)
                                         local color = Color3.fromHSV(table.unpack(value))
 
-                                        return tostring(color.G)
+                                        return tostring(round(color.G * 255, 2))
                                     end),
 
                                     [Roact.Event.FocusLost] = function(self: TextBox, enterPressed: boolean)
@@ -215,7 +220,7 @@ local function ColorPicker(props: props, hooks: RoactHooks.Hooks)
                                     Text = hsv:map(function(value)
                                         local color = Color3.fromHSV(table.unpack(value))
 
-                                        return tostring(color.B)
+                                        return tostring(round(color.B * 255, 2))
                                     end),
 
                                     [Roact.Event.FocusLost] = function(self: TextBox, enterPressed: boolean)
