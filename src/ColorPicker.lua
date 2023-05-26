@@ -133,6 +133,109 @@ local function ColorPicker(props: props, hooks: RoactHooks.Hooks)
             BackgroundColor3 = props.info.theme.elementColor,
 
             [Roact.Children] = {
+                Values = {
+                    [Roact.Children] = {
+                        R = {
+                            [Roact.Children] = {
+                                Value = {
+                                    TextColor3 = props.info.theme.textColor,
+
+                                    BackgroundColor3 = Color3.fromRGB(
+                                        (props.info.theme.elementColor.R * 255) + 13,
+                                        (props.info.theme.elementColor.G * 255) + 13,
+                                        (props.info.theme.elementColor.B * 255) + 13
+                                    ),
+
+                                    Text = hsv:map(function(value)
+                                        local color = Color3.fromHSV(table.unpack(value))
+
+                                        return tostring(color.R)
+                                    end),
+
+                                    [Roact.Event.FocusLost] = function(self: TextBox, enterPressed: boolean)
+                                        if rainbowConnection.value then return end
+
+                                        local r: number? = enterPressed and tonumber(self.Text) :: any; if r then
+                                            r = math.clamp(r, 0, 255)
+                                            local color = Color3.fromHSV(table.unpack(hsv:getValue()))
+
+                                            updateHsv({ Color3.toHSV(Color3.new(r / 255, color.G, color.B)) })
+                                        end
+                                    end,
+                                },
+
+                                Name = { TextColor3 = props.info.theme.textColor },
+                            },
+                        },
+
+                        G = {
+                            [Roact.Children] = {
+                                Value = {
+                                    TextColor3 = props.info.theme.textColor,
+
+                                    BackgroundColor3 = Color3.fromRGB(
+                                        (props.info.theme.elementColor.R * 255) + 13,
+                                        (props.info.theme.elementColor.G * 255) + 13,
+                                        (props.info.theme.elementColor.B * 255) + 13
+                                    ),
+
+                                    Text = hsv:map(function(value)
+                                        local color = Color3.fromHSV(table.unpack(value))
+
+                                        return tostring(color.G)
+                                    end),
+
+                                    [Roact.Event.FocusLost] = function(self: TextBox, enterPressed: boolean)
+                                        if rainbowConnection.value then return end
+
+                                        local g: number? = enterPressed and tonumber(self.Text) :: any; if g then
+                                            g = math.clamp(g, 0, 255)
+                                            local color = Color3.fromHSV(table.unpack(hsv:getValue()))
+
+                                            updateHsv({ Color3.toHSV(Color3.new(color.R, g / 255, color.B)) })
+                                        end
+                                    end,
+                                },
+
+                                Name = { TextColor3 = props.info.theme.textColor },
+                            },
+                        },
+
+                        B = {
+                            [Roact.Children] = {
+                                Value = {
+                                    TextColor3 = props.info.theme.textColor,
+
+                                    BackgroundColor3 = Color3.fromRGB(
+                                        (props.info.theme.elementColor.R * 255) + 13,
+                                        (props.info.theme.elementColor.G * 255) + 13,
+                                        (props.info.theme.elementColor.B * 255) + 13
+                                    ),
+
+                                    Text = hsv:map(function(value)
+                                        local color = Color3.fromHSV(table.unpack(value))
+
+                                        return tostring(color.B)
+                                    end),
+
+                                    [Roact.Event.FocusLost] = function(self: TextBox, enterPressed: boolean)
+                                        if rainbowConnection.value then return end
+
+                                        local b: number? = enterPressed and tonumber(self.Text) :: any; if b then
+                                            b = math.clamp(b, 0, 255)
+                                            local color = Color3.fromHSV(table.unpack(hsv:getValue()))
+
+                                            updateHsv({ Color3.toHSV(Color3.new(color.R, color.G, b / 255)) })
+                                        end
+                                    end,
+                                },
+
+                                Name = { TextColor3 = props.info.theme.textColor },
+                            },
+                        },
+                    },
+                },
+
                 Rainbow = {
                     [Roact.Children] = {
                         Fill = {
