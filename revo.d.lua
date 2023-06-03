@@ -108,7 +108,7 @@ type Toggle = RoactElementFn<{
     info: info,
     initialValue: boolean,
 
-    update: (value: boolean) -> (),
+    update: updateBinding<boolean>,
 }>
 
 type Button = RoactElementFn<{
@@ -121,14 +121,14 @@ type Keybind = RoactElementFn<{
     info: info,
     initialValue: Enum.KeyCode | Enum.UserInputType,
 
-    update: (value: Enum.KeyCode | Enum.UserInputType) -> (),
+    update: updateBinding<Enum.KeyCode | Enum.UserInputType>,
 }>
 
 type TextBox = RoactElementFn<{
     info: info,
     initialValue: string,
 
-    update: (value: string) -> (),
+    update: updateBinding<string>,
 }>
 
 type Dropdown = RoactElementFn<{
@@ -136,14 +136,14 @@ type Dropdown = RoactElementFn<{
     initialValue: string?,
 
     options: { string },
-    update: (value: string) -> (),
+    update: updateBinding<string>,
 }>
 
 type ColorPicker = RoactElementFn<{
     info: info,
     initialValue: Color3,
 
-    update: (value: Color3) -> (),
+    update: updateBinding<Color3>,
 }>
 
 export type Revo = {
