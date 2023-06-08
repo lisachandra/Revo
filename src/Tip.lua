@@ -24,7 +24,7 @@ type styles = {
     position: RoactBinding<UDim2>,
 }
 
-local function Tip(props: props & internal, hooks: RoactHooks.Hooks); print("Tip")
+local function Tip(props: props & internal, hooks: RoactHooks.Hooks) print("Tip")
     local Main = props.ref:getValue(); if not Main then
         return e("Frame", { Visible = false })
     end

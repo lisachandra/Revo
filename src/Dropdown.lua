@@ -28,7 +28,7 @@ type styles = {
     canvasSize: RoactBinding<UDim2>,
 }
 
-local function Dropdown(props: props, hooks: RoactHooks.Hooks); print("Dropdown")
+local function Dropdown(props: props, hooks: RoactHooks.Hooks) print("Dropdown")
     local ref = hooks.useValue(Roact.createRef())
     local opened = hooks.useValue(false)
 

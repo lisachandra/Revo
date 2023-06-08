@@ -23,7 +23,7 @@ type styles = {
     sideTransparency: RoactBinding<number>,
 }
 
-local function Page(props: props & internal, hooks: RoactHooks.Hooks); print("Page")
+local function Page(props: props & internal, hooks: RoactHooks.Hooks) print("Page")
     local Main = props.ref:getValue(); if not Main then
         return e("Frame", { Visible = false })
     end

@@ -19,7 +19,7 @@ type styles = {
     transparency: RoactBinding<number>,
 }
 
-local function Blur(props: props & internal, hooks: RoactHooks.Hooks); print("Blur")
+local function Blur(props: props & internal, hooks: RoactHooks.Hooks) print("Blur")
     local history = RoactRouter.useHistory(hooks)
 
     local styles: any, api = RoactSpring.useSpring(hooks, function()
