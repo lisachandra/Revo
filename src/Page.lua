@@ -30,7 +30,7 @@ local function Page(props: props & internal, hooks: RoactHooks.Hooks)
 
     local elementLocations = hooks.useValue({} :: Dictionary<string>)
 
-    local history = RoactRouter.useHistory(hooks)
+    local history = hooks.useValue(RoactRouter.useHistory(hooks))
 
     local elements = {}; for elementName, element in pairs((props :: any)[Roact.Children]) do
         elementLocations.value[elementName] = elementLocations.value[elementName] or `/{HttpService:GenerateGUID()}_tip`
@@ -45,7 +45,7 @@ local function Page(props: props & internal, hooks: RoactHooks.Hooks)
     end
 
     return e(Templates.Page, {
-        Visible = history.location.path:find(props.location) and true or false,
+        Visible = history.value.location.path:find(props.location) and true or false,
         ScrollBarImageColor3 = Color3.fromRGB(
             (props.theme.schemeColor.R * 255) - 16,
             (props.theme.schemeColor.G * 255) - 15,

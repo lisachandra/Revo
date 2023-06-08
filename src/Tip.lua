@@ -29,7 +29,7 @@ local function Tip(props: props & internal, hooks: RoactHooks.Hooks)
         return e("Frame", { Visible = false })
     end
 
-    local history = RoactRouter.useHistory(hooks)
+    local history = hooks.useValue(RoactRouter.useHistory(hooks))
 
     local styles: any, api = RoactSpring.useSpring(hooks, function()
         return {
@@ -42,19 +42,19 @@ local function Tip(props: props & internal, hooks: RoactHooks.Hooks)
 
     hooks.useEffect(function()
         api.start({
-            position = if history.location.path:find(props.location) then
+            position = if history.value.location.path:find(props.location) then
                 UDim2.fromScale(0, 0)
             else
                 UDim2.fromScale(0, 2)
         })
-    end, { history, props.location } :: table)
+    end, {})
 
     return f({
         Button = e(props.template, {
             ImageColor3 = props.theme.schemeColor,
 
             [Roact.Event.MouseButton1Click] = function()
-                history:push(props.location)
+                history.value:push(props.location)
             end,
         }),
 

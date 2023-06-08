@@ -21,7 +21,7 @@ type styles = {
 }
 
 local function Tab(props: props & internal, hooks: RoactHooks.Hooks)
-    local history = RoactRouter.useHistory(hooks)
+    local history = hooks.useValue(RoactRouter.useHistory(hooks))
 
     local styles: any, api = RoactSpring.useSpring(hooks, function()
         return {
@@ -34,9 +34,9 @@ local function Tab(props: props & internal, hooks: RoactHooks.Hooks)
 
     hooks.useEffect(function()
         api.start({
-            sideTransparency = history.location.path:find(props.location) and 0 or 1
+            sideTransparency = history.value.location.path:find(props.location) and 0 or 1
         })
-    end, { history, props.location } :: table)
+    end, {})
 
     return e(Templates.Tab, {
         BackgroundColor3 = props.theme.schemeColor,
@@ -45,8 +45,8 @@ local function Tab(props: props & internal, hooks: RoactHooks.Hooks)
         Text = props.name,
 
         [Roact.Event.MouseButton1Click] = function()
-            if not history.location.path:find(props.location) then
-                history:replace(props.location)
+            if not history.value.location.path:find(props.location) then
+                history.value:replace(props.location)
             end
         end,
     })

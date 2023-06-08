@@ -20,7 +20,7 @@ type styles = {
 }
 
 local function Blur(props: props & internal, hooks: RoactHooks.Hooks)
-    local history = RoactRouter.useHistory(hooks)
+    local history = hooks.useValue(RoactRouter.useHistory(hooks))
 
     local styles: any, api = RoactSpring.useSpring(hooks, function()
         return {
@@ -32,7 +32,7 @@ local function Blur(props: props & internal, hooks: RoactHooks.Hooks)
     local styles: styles = styles
 
     hooks.useEffect(function()
-        local connection; connection = history.onChanged:connect(function(path)
+        local connection; connection = history.value.onChanged:connect(function(path)
             api.start({
                 transparency = path:find("_tip") and 0.5 or 1
             })
@@ -51,8 +51,8 @@ local function Blur(props: props & internal, hooks: RoactHooks.Hooks)
         end),
 
         [Roact.Event.MouseButton1Click] = function()
-            if history.location.path:find("_tip") then
-                history:goBack()
+            if history.value.location.path:find("_tip") then
+                history.value:goBack()
             end
         end,
     })
