@@ -53,9 +53,9 @@ local function Tip(props: props & internal, hooks: RoactHooks.Hooks) print("Tip"
         Button = e(props.template, {
             ImageColor3 = props.theme.schemeColor,
 
-            [Roact.Event.MouseButton1Click] = hooks.useCallback(function()
+            [Roact.Event.MouseButton1Click] = function()
                 history:push(props.location)
-            end, { history, props.location } :: table),
+            end,
         }),
 
         Tip = e(Roact.Portal, {

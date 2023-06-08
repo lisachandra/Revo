@@ -50,11 +50,11 @@ local function Blur(props: props & internal, hooks: RoactHooks.Hooks) print("Blu
             return value <= 1 and true or false
         end),
 
-        [Roact.Event.MouseButton1Click] = hooks.useCallback(function()
+        [Roact.Event.MouseButton1Click] = function()
             if history.location.path:find("_tip") then
                 history:goBack()
             end
-        end, { history }),
+        end,
     })
 end
 

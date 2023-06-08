@@ -69,72 +69,71 @@ local function Window(props: props, hooks: RoactHooks.Hooks) print("Window")
         }, page.props[Roact.Children]))
 
         table.insert(tabs, e(Tab, {
+            ref = ref.value,
             name = pageName,
             theme = props.theme,
             location = pageLocations.value[pageName],
         }))
     end
 
-    --[[return e(RoactRouter.Router, {}, {
-        Window =  
-    })]]
-
-    return e(Templates.Window, {
-        [Roact.Ref] = ref.value,
-
-        Visible = props.visible,
-        BackgroundColor3 = props.theme.background,
-        Position = styles.position,
-    }, {
-        Header = {
-            BackgroundColor3 = props.theme.header,
-
-            [Roact.Children] = {
-                Title = { Text = props.title },
-                Coverup = { BackgroundColor3 = props.theme.header },
-                Close = {
-                    [Roact.Event.MouseButton1Click] = props.close,
+    return e(RoactRouter.Router, {}, {
+        Window = e(Templates.Window, {
+            [Roact.Ref] = ref.value,
+    
+            Visible = props.visible,
+            BackgroundColor3 = props.theme.background,
+            Position = styles.position,
+        }, {
+            Header = {
+                BackgroundColor3 = props.theme.header,
+    
+                [Roact.Children] = {
+                    Title = { Text = props.title },
+                    Coverup = { BackgroundColor3 = props.theme.header },
+                    Close = {
+                        [Roact.Event.MouseButton1Click] = props.close,
+                    },
+                } :: any,
+    
+                [Roact.Event.InputBegan] = function(_self: Frame, input: InputObject)
+                    if input.UserInputType == Enum.UserInputType.MouseButton1 and not dragConnection.value then
+                        dragConnection.value = RunService.Heartbeat:Connect(function()
+                            local mousePos = UserInputService:GetMouseLocation() - Vector2.new(0, GuiService:GetGuiInset().Y)
+    
+                            api.start({
+                                position = UDim2.fromOffset(mousePos.X, mousePos.Y),
+                            })
+                        end)
+                    end
+                end,
+    
+                [Roact.Event.InputEnded] = function(_self: Frame, input: InputObject)
+                    if input.UserInputType == Enum.UserInputType.MouseButton1 and dragConnection.value then
+                        dragConnection.value:Disconnect()
+                        dragConnection.value = nil
+                    end
+                end,
+            },
+    
+            Side = {
+                BackgroundColor3 = props.theme.header,
+    
+                [Roact.Children] = {
+                    Coverup = { BackgroundColor3 = props.theme.header },
+                    Tabs = { [Roact.Children] = f(tabs) },
                 },
-            } :: any,
-
-            [Roact.Event.InputBegan] = function(_self: Frame, input: InputObject)
-                if input.UserInputType == Enum.UserInputType.MouseButton1 and not dragConnection.value then
-                    dragConnection.value = RunService.Heartbeat:Connect(function()
-                        local mousePos = UserInputService:GetMouseLocation() - Vector2.new(0, GuiService:GetGuiInset().Y)
-
-                        api.start({
-                            position = UDim2.fromOffset(mousePos.X, mousePos.Y),
-                        })
-                    end)
-                end
-            end,
-
-            [Roact.Event.InputEnded] = function(_self: Frame, input: InputObject)
-                if input.UserInputType == Enum.UserInputType.MouseButton1 and dragConnection.value then
-                    dragConnection.value:Disconnect()
-                    dragConnection.value = nil
-                end
-            end,
-        },
-
-        Side = {
-            BackgroundColor3 = props.theme.header,
-
-            [Roact.Children] = {
-                Coverup = { BackgroundColor3 = props.theme.header },
-                Tabs = { [Roact.Children] = f(tabs) },
             },
-        },
-
-        Pages = {
-            [Roact.Children] = {
-                Blur = w(Blur, {
-                    theme = props.theme,
-                }),
-
-                Pages = { [Roact.Children] = f(pages) }
+    
+            Pages = {
+                [Roact.Children] = {
+                    Blur = w(Blur, {
+                        theme = props.theme,
+                    }),
+    
+                    Pages = { [Roact.Children] = f(pages) },
+                },
             },
-        },
+        }),
     })
 end
 
