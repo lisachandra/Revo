@@ -22,7 +22,7 @@ type styles = {
     background: RoactBinding<Color3>,
 }
 
-local function Button(props: props, hooks: RoactHooks.Hooks)
+local function Button(props: props, hooks: RoactHooks.Hooks); print("Button")
     local ref = hooks.useValue(Roact.createRef())
 
     local styles: any, api = RoactSpring.useSpring(hooks, function()

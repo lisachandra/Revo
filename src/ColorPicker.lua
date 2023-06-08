@@ -38,7 +38,7 @@ local function zigzag(t: number)
     return math.acos(math.cos((t / 100) * math.pi)) / math.pi
 end
 
-local function ColorPicker(props: props, hooks: RoactHooks.Hooks)
+local function ColorPicker(props: props, hooks: RoactHooks.Hooks); print("ColorPicker")
     local ref = hooks.useValue(Roact.createRef() :: RoactRef<TextButton>)
 
     local colorRef = hooks.useValue(Roact.createRef() :: RoactRef<ImageButton & { Cursor: ImageLabel }>)
