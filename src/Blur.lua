@@ -39,7 +39,7 @@ local function Blur(props: props & internal, hooks: RoactHooks.Hooks) print("Blu
         end)
 
         return function()
-            connection:Disconnect()
+            connection:disconnect()
             connection = nil :: any
         end
     end, {})
