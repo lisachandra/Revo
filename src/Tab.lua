@@ -11,7 +11,6 @@ local e = Roact.createElement
 type props = {}
 
 type internal = {
-    ref: RoactRef<Types.Mainframe>,
     theme: Types.theme,
     name: string,
     location: string,
@@ -22,10 +21,6 @@ type styles = {
 }
 
 local function Tab(props: props & internal, hooks: RoactHooks.Hooks) print("Tab")
-    local Main = props.ref:getValue(); if not Main then
-        return e("Frame", { Visible = false })
-    end
-    
     local history = RoactRouter.useHistory(hooks)
 
     local styles: any, api = RoactSpring.useSpring(hooks, function()

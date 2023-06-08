@@ -70,7 +70,6 @@ local function Window(props: props, hooks: RoactHooks.Hooks) print("Window")
         }, page.props[Roact.Children]))
 
         table.insert(tabs, e(Tab, {
-            ref = ref.value,
             name = pageName,
             theme = props.theme,
             location = pageLocations.value[pageName],
