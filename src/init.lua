@@ -4,7 +4,7 @@ if not getfenv(1).__packager then
     local Packager: Packager = loadstring(game:HttpGet("https://gist.github.com/zxibs/f1a148a72a058636296c0bc991aca130/raw/"))()
 
     Packager("evaera", "roblox-lua-promise", "v4.0.0", "lib", { "Promise" })()
-    local Roact: Roact = Packager("Roblox", "roact", "v1.4.4", "src", { "Roact", "React" })()
+    local Roact: Roact = Packager("zxibs", "roact", "master", "src", { "Roact", "React" })()
     Packager("Kampfkarren", "roact-hooks", "main", "src", { "RoactHooks" })()
     Packager("zxibs", "roact-router", "master", "src", { "RoactRouter" })()
     Packager("chriscerie", "roact-spring", "v1.1.5", "src", { "RoactSpring" })()
