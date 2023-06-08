@@ -75,7 +75,7 @@ local function Window(props: props, hooks: RoactHooks.Hooks) print("Window")
         }))
     end
 
-    return e(RoactRouter.Router, {}, {
+    return e(function(props) return e(props[Roact.Children].Window) end, {}, {
         Window = e(Templates.Window, {
             [Roact.Ref] = ref.value,
     
