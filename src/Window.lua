@@ -17,7 +17,6 @@ local Page = require(script.Parent.Page)
 local Tab = require(script.Parent.Tab)
 
 local e = Roact.createElement
-local f = Roact.createFragment
 local w = RoactTemplate.wrapped
 
 type props = {
@@ -122,7 +121,7 @@ local function Window(props: props, hooks: RoactHooks.Hooks) print("Window")
     
                 [Roact.Children] = {
                     Coverup = { BackgroundColor3 = props.theme.header },
-                    Tabs = { [Roact.Children] = f(tabs) },
+                    Tabs = { [Roact.Children] = tabs },
                 },
             },
     
@@ -132,7 +131,7 @@ local function Window(props: props, hooks: RoactHooks.Hooks) print("Window")
                         theme = props.theme,
                     }),
     
-                    Pages = { [Roact.Children] = f(pages) },
+                    Pages = { [Roact.Children] = pages },
                 },
             },
         }),
