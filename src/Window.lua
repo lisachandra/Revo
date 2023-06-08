@@ -30,7 +30,7 @@ type styles = {
     position: RoactBinding<UDim2>,
 }
 
-local function Window(props: props, hooks: RoactHooks.Hooks) print("Window")
+local function Window(props: props, hooks: RoactHooks.Hooks)
     local _, render = hooks.useState(nil)
     
     local ref = hooks.useValue(Roact.createRef() :: RoactRef<Types.Mainframe>)

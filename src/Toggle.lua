@@ -24,7 +24,7 @@ type styles = {
     background: RoactBinding<Color3>,
 }
 
-local function Toggle(props: props, hooks: RoactHooks.Hooks) print("Toggle")
+local function Toggle(props: props, hooks: RoactHooks.Hooks)
     local ref = hooks.useValue(Roact.createRef() :: RoactRef<TextButton>)
     local toggle = hooks.useValue(props.initialValue)
 

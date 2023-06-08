@@ -28,7 +28,7 @@ type styles = {
     size: RoactBinding<UDim2>,
 }
 
-local function Ripple(props: props & internal, hooks: RoactHooks.Hooks) print("Ripple")
+local function Ripple(props: props & internal, hooks: RoactHooks.Hooks)
     if props.ref then
         local button = props.ref:getValue()
         

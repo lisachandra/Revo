@@ -22,7 +22,7 @@ type styles = {
     background: RoactBinding<Color3>,
 }
 
-local function TextBox(props: props, hooks: RoactHooks.Hooks) print("TextBox")
+local function TextBox(props: props, hooks: RoactHooks.Hooks)
     local ref = hooks.useValue(Roact.createRef() :: RoactRef<TextButton>)
 
     local text: RoactBinding<string>, updateText = hooks.useBinding(props.initialValue)

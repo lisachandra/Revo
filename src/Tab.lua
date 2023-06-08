@@ -20,7 +20,7 @@ type styles = {
     sideTransparency: RoactBinding<number>,
 }
 
-local function Tab(props: props & internal, hooks: RoactHooks.Hooks) print("Tab")
+local function Tab(props: props & internal, hooks: RoactHooks.Hooks)
     local history = RoactRouter.useHistory(hooks)
 
     local styles: any, api = RoactSpring.useSpring(hooks, function()

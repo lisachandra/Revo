@@ -36,7 +36,7 @@ type styles = {
     background: RoactBinding<Color3>,
 }
 
-local function Keybind(props: props, hooks: RoactHooks.Hooks) print("Keybind")
+local function Keybind(props: props, hooks: RoactHooks.Hooks)
     local ref = hooks.useValue(Roact.createRef() :: RoactRef<TextButton>)
 
     local keybind: RoactBinding<keybind>, updateKeybind = hooks.useBinding(props.initialValue)
