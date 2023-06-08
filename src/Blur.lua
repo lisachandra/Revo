@@ -32,7 +32,7 @@ local function Blur(props: props & internal, hooks: RoactHooks.Hooks) print("Blu
     local styles: styles = styles
 
     hooks.useEffect(function()
-        local connection; connection = history.onChanged:Connect(function(path)
+        local connection; connection = history.onChanged:connect(function(path)
             api.start({
                 transparency = path:find("_tip") and 0.5 or 1
             })

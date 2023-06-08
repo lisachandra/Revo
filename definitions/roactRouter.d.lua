@@ -1,5 +1,15 @@
 type Hooks = any
 
+type connection = {
+    disconnect: (self: any) -> (),
+}
+
+type signal<T... = ...any> = {
+    wait: (self: any) -> T...,
+    connect: (self: any, callback: (T...) -> ()) -> connection,
+    fire: (self: any, T...) -> (),
+}
+
 type PathMatchResults = Dictionary<string>
 
 type PathMatchOptions = {
@@ -16,7 +26,7 @@ type HistoryEntry = {
 }
 
 type History = {
-    onChanged: RBXScriptSignal<string, any?>,
+    onChanged: signal<string, any?>,
     location: HistoryEntry,
 
     push: (self: any, path: string, state: any?) -> (),
