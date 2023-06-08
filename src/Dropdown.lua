@@ -12,6 +12,9 @@ local Tip = require(script.Parent.Tip)
 
 local merge = require(script.Parent.merge)
 
+local e = Roact.createElement
+local w = RoactTemplate.wrapped
+
 type props = {
     info: Types.info,
     initialValue: string?,
@@ -48,7 +51,7 @@ local function Dropdown(props: props, hooks: RoactHooks.Hooks)
     end, { props.initialValue })
 
     local options = {}; for index, option in ipairs(props.options) do
-        table.insert(options, Roact.createElement(Option, {
+        table.insert(options, e(Option, {
             theme = props.info.theme,
             option = option,
             order = index,
@@ -57,7 +60,7 @@ local function Dropdown(props: props, hooks: RoactHooks.Hooks)
         }))
     end
 
-    return Roact.createElement(Templates.Dropdown, {
+    return e(Templates.Dropdown, {
         LayoutOrder = props.info.order,
         Size = styles.canvasSize,
     }, merge(options, {
@@ -93,17 +96,16 @@ local function Dropdown(props: props, hooks: RoactHooks.Hooks)
             end,
 
             [Roact.Children] = {
-                Ripple = RoactTemplate.wrapped(Ripple, {
+                Ripple = w(Ripple, {
                     ref = ref.value,
                     theme = props.info.theme,
                 }),
         
-                Tip = RoactTemplate.wrapped(Tip, {
+                Tip = w(Tip, {
                     ref = props.info.ref,
                     description = props.info.description or "",
                     theme = props.info.theme,
-                    opened = props.info.tip.opened,
-                    update = props.info.tip.update,
+                    location = props.info.location,
                 }),
 
                 Selected = {

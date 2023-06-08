@@ -9,6 +9,9 @@ local Types = require(script.Parent.Types)
 local Ripple = require(script.Parent.Ripple)
 local Tip = require(script.Parent.Tip)
 
+local e = Roact.createElement
+local w = RoactTemplate.wrapped
+
 type props = {
     info: Types.info,
 
@@ -31,7 +34,7 @@ local function Button(props: props, hooks: RoactHooks.Hooks)
 
     local styles: styles = styles
 
-    return Roact.createElement(Templates.Button, {
+    return e(Templates.Button, {
         [Roact.Ref] = ref.value :: any,
 
         BackgroundColor3 = styles.background,
@@ -55,17 +58,16 @@ local function Button(props: props, hooks: RoactHooks.Hooks)
             }) 
         end,
     }, {
-        Ripple = RoactTemplate.wrapped(Ripple, {
+        Ripple = w(Ripple, {
             ref = ref.value,
             theme = props.info.theme,
         }),
 
-        Tip = RoactTemplate.wrapped(Tip, {
+        Tip = w(Tip, {
             ref = props.info.ref,
             description = props.info.description or "",
             theme = props.info.theme,
-            opened = props.info.tip.opened,
-            update = props.info.tip.update,
+            location = props.info.location,
         }),
 
         Name = {

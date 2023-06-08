@@ -8,6 +8,9 @@ local Types = require(script.Parent.Types)
 
 local Ripple = require(script.Parent.Ripple)
 
+local e = Roact.createElement
+local w = RoactTemplate.wrapped
+
 type props = {
     theme: Types.theme,
     option: string,
@@ -32,7 +35,7 @@ local function Option(props: props, hooks: RoactHooks.Hooks)
 
     local styles: styles = styles
 
-    return Roact.createElement(Templates.Option, {
+    return e(Templates.Option, {
         [Roact.Ref] = ref.value :: any,
 
         TextColor3 = Color3.fromRGB(
@@ -49,7 +52,7 @@ local function Option(props: props, hooks: RoactHooks.Hooks)
             return props.order
         end),
 
-        Text = "  " .. props.option,
+        Text = `  {props.option}`,
         BackgroundColor3 = styles.background,
 
         [Roact.Event.MouseButton1Click] = function(_self: TextButton)
@@ -74,7 +77,7 @@ local function Option(props: props, hooks: RoactHooks.Hooks)
             }) 
         end,
     }, {
-        Ripple = RoactTemplate.wrapped(Ripple, {
+        Ripple = w(Ripple, {
             ref = ref.value :: any,
             theme = props.theme,
         }),

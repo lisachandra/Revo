@@ -13,6 +13,9 @@ local Types = require(script.Parent.Types)
 local Ripple = require(script.Parent.Ripple)
 local Tip = require(script.Parent.Tip)
 
+local e = Roact.createElement
+local w = RoactTemplate.wrapped
+
 local function round(num: number, dp: number)
     local mult = 10 ^ (dp or 0)
     return math.floor((num * mult) + 0.5) / mult
@@ -72,7 +75,7 @@ local function ColorPicker(props: props, hooks: RoactHooks.Hooks)
         end
     end, {})
 
-    return Roact.createElement(Templates.ColorPicker, {
+    return e(Templates.ColorPicker, {
         Size = styles.canvasSize,
         LayoutOrder = props.info.order,
     }, {
@@ -106,17 +109,16 @@ local function ColorPicker(props: props, hooks: RoactHooks.Hooks)
             end,
 
             [Roact.Children] = {
-                Ripple = RoactTemplate.wrapped(Ripple, {
+                Ripple = w(Ripple, {
                     ref = ref.value :: any,
                     theme = props.info.theme,
                 }),
         
-                Tip = RoactTemplate.wrapped(Tip, {
+                Tip = w(Tip, {
                     ref = props.info.ref,
                     description = props.info.description or "",
                     theme = props.info.theme,
-                    opened = props.info.tip.opened,
-                    update = props.info.tip.update,
+                    location = props.info.location,
                 }),
         
                 Name = {
@@ -154,7 +156,7 @@ local function ColorPicker(props: props, hooks: RoactHooks.Hooks)
                                     Text = hsv:map(function(value)
                                         local color = Color3.fromHSV(table.unpack(value))
 
-                                        return tostring(round(color.R * 255, 2))
+                                        return `{round(color.R * 255, 2)}`
                                     end),
 
                                     [Roact.Event.FocusLost] = function(self: TextBox, enterPressed: boolean)
@@ -187,7 +189,7 @@ local function ColorPicker(props: props, hooks: RoactHooks.Hooks)
                                     Text = hsv:map(function(value)
                                         local color = Color3.fromHSV(table.unpack(value))
 
-                                        return tostring(round(color.G * 255, 2))
+                                        return `{round(color.G * 255, 2)}`
                                     end),
 
                                     [Roact.Event.FocusLost] = function(self: TextBox, enterPressed: boolean)
@@ -220,7 +222,7 @@ local function ColorPicker(props: props, hooks: RoactHooks.Hooks)
                                     Text = hsv:map(function(value)
                                         local color = Color3.fromHSV(table.unpack(value))
 
-                                        return tostring(round(color.B * 255, 2))
+                                        return `{round(color.B * 255, 2)}`
                                     end),
 
                                     [Roact.Event.FocusLost] = function(self: TextBox, enterPressed: boolean)

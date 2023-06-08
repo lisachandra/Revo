@@ -6,7 +6,7 @@ export type info = {
     order: number,
     theme: theme,
     ref: RoactRef<Frame & { Tips: Frame }>,
-    tip: { opened: boolean, update: (value: boolean) -> () }
+    location: string,
 }
 
 export type theme = {
@@ -15,6 +15,8 @@ export type theme = {
     header: Color3,
     textColor: Color3,
     elementColor: Color3,
-} 
+}
+
+export type Mainframe = Frame & { Side: Frame & { Tabs: Frame }, Pages: Frame, Tips: Frame }
 
 return {}

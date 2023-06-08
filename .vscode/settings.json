@@ -1,10 +1,10 @@
 {
     "luau-lsp.sourcemap.rojoProjectFile": "dev.project.json",
     "luau-lsp.types.definitionFiles": [
-        "D:\\Scripts\\utils.d.lua",
-        "D:\\Scripts\\unc.d.lua",
-        "D:\\Scripts\\roact.d.lua",
-        "revo.d.lua",
-        "loaded.d.lua"
+        "definitions/utils.d.lua",
+        "definitions/unc.d.lua",
+        "definitions/roact.d.lua",
+        "definitions/roactRouter.d.lua",
+        "definitions/loaded.d.lua"
     ],
 }

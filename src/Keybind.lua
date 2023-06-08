@@ -20,6 +20,9 @@ local ESCAPE_INPUTS: { keybind } = {
     Enum.UserInputType.MouseWheel,
 }
 
+local e = Roact.createElement
+local w = RoactTemplate.wrapped
+
 type keybind = Enum.KeyCode | Enum.UserInputType
 
 type props = {
@@ -51,7 +54,7 @@ local function Keybind(props: props, hooks: RoactHooks.Hooks)
         updateKeybind(props.initialValue)
     end, { props.initialValue })
 
-    return Roact.createElement(Templates.Keybind, {
+    return e(Templates.Keybind, {
         [Roact.Ref] = ref.value :: any,
 
         BackgroundColor3 = styles.background,
@@ -89,17 +92,16 @@ local function Keybind(props: props, hooks: RoactHooks.Hooks)
             }) 
         end,
     }, {
-        Ripple = RoactTemplate.wrapped(Ripple, {
+        Ripple = w(Ripple, {
             ref = ref.value :: any,
             theme = props.info.theme,
         }),
 
-        Tip = RoactTemplate.wrapped(Tip, {
+        Tip = w(Tip, {
             ref = props.info.ref,
             description = props.info.description or "",
             theme = props.info.theme,
-            opened = props.info.tip.opened,
-            update = props.info.tip.update,
+            location = props.info.location,
         }),
 
         Keybind = {

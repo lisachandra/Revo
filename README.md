@@ -13,13 +13,13 @@ local RoactSpring = require(script.Parent.RoactSpring)
 local tree
 
 local function App()
-	return Roact.createElement("ScreenGui", {
+	return e("ScreenGui", {
 		ZIndexBehavior = Enum.ZIndexBehavior.Sibling,
 		IgnoreGuiInset = false,
 		ResetOnSpawn = false,
 		Enabled = true,
 	}, {
-		Window = Roact.createElement(Revo.Window, {
+		Window = e(Revo.Window, {
 			visible = true,
 			theme = Revo.Themes.Blood,
 			title = "Test",
@@ -27,15 +27,15 @@ local function App()
     			Roact.unmount(tree)
 			end,
 		}, {
-			Test1 = Roact.createElement(Revo.Page, {}, {
-				Label = Roact.createElement(Revo.Label, {
+			Test1 = e(Revo.Page, {}, {
+				Label = e(Revo.Label, {
 					info = {
 						description = "Label",
 						order = 0,
 					},
 				}),
 
-				Toggle = Roact.createElement(Revo.Toggle, {
+				Toggle = e(Revo.Toggle, {
 					initialValue = false,
 					info = {
 						description = "This is a Toggle element",
@@ -47,7 +47,7 @@ local function App()
 					end,
 				}),
 
-				Button = Roact.createElement(Revo.Button, {
+				Button = e(Revo.Button, {
 					info = {
 						description = "This is a button element",
 						order = 2,
@@ -58,7 +58,7 @@ local function App()
 					end,
 				}),
 
-				Keybind = Roact.createElement(Revo.Keybind, {
+				Keybind = e(Revo.Keybind, {
 					initialValue = Enum.KeyCode.Pause,
 					info = {
 						description = "This is a Keybind element",
@@ -70,7 +70,7 @@ local function App()
 					end,
 				}),
 
-				TextBox = Roact.createElement(Revo.TextBox, {
+				TextBox = e(Revo.TextBox, {
 					initialValue = "",
 					info = {
 						description = "This is a TextBox element",
@@ -82,7 +82,7 @@ local function App()
 					end,
 				}),
 
-				Dropdown = Roact.createElement(Revo.Dropdown, {
+				Dropdown = e(Revo.Dropdown, {
 					initialValue = "One",
 					info = {
 						description = "This is a Dropdown element",
@@ -96,7 +96,7 @@ local function App()
 					end,
 				}),
 
-				ColorPicker = Roact.createElement(Revo.ColorPicker, {
+				ColorPicker = e(Revo.ColorPicker, {
 					initialValue = Color3.new(),
 					info = {
 						description = "This is a ColorPicker element",
@@ -112,6 +112,6 @@ local function App()
 	})
 end
 
-tree = Roact.mount(Roact.createElement(App), gethui())
+tree = Roact.mount(e(App), gethui())
 
 ```

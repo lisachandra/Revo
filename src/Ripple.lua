@@ -8,6 +8,9 @@ local RoactSpring = require(script.Parent.Parent.RoactSpring)
 
 local Types = require(script.Parent.Types)
 
+local e = Roact.createElement
+local f = Roact.createFragment
+
 type props = {
     ref: RoactRef<GuiButton>,
     theme: Types.theme,
@@ -44,7 +47,7 @@ local function Ripple(props: props & internal, hooks: RoactHooks.Hooks)
 
                 local connection; connection = button.MouseButton1Click:Connect(function()
                     local key = HttpService:GenerateGUID()
-                    local element; element = Roact.createElement(Ripple :: any, {
+                    local element; element = e(Ripple :: any, {
                         size = sizeTarget.value,
                         template = props.template,
                         theme = props.theme,
@@ -69,7 +72,7 @@ local function Ripple(props: props & internal, hooks: RoactHooks.Hooks)
             return
         end, { button and true or false })
 
-        return Roact.createFragment(ripples.value)
+        return f(ripples.value)
     else
         local self = hooks.useValue(Roact.createRef() :: RoactRef<ImageLabel>)
         local mousePosition = hooks.useValue(UserInputService:GetMouseLocation() - Vector2.new(0, GuiService:GetGuiInset().Y))
@@ -103,7 +106,7 @@ local function Ripple(props: props & internal, hooks: RoactHooks.Hooks)
                 }):andThen(props.finished)
             end, {})
             
-            return Roact.createElement(props.template, {
+            return e(props.template, {
                 [Roact.Ref] = self.value,
 
                 ImageColor3 = props.theme.schemeColor,
@@ -112,7 +115,7 @@ local function Ripple(props: props & internal, hooks: RoactHooks.Hooks)
                 Size = styles.size,
             })
         else
-            return Roact.createElement(props.template, {
+            return e(props.template, {
                 [Roact.Ref] = self.value
             })
         end

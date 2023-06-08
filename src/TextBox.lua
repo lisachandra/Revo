@@ -8,6 +8,9 @@ local Types = require(script.Parent.Types)
 
 local Tip = require(script.Parent.Tip)
 
+local e = Roact.createElement
+local w = RoactTemplate.wrapped
+
 type props = {
     info: Types.info,
     initialValue: string,
@@ -37,7 +40,7 @@ local function TextBox(props: props, hooks: RoactHooks.Hooks)
         updateText(props.initialValue)
     end, { props.initialValue })
 
-    return Roact.createElement(Templates.TextBox, {
+    return e(Templates.TextBox, {
         [Roact.Ref] = ref.value :: any,
 
         BackgroundColor3 = styles.background,
@@ -59,12 +62,11 @@ local function TextBox(props: props, hooks: RoactHooks.Hooks)
             }) 
         end,
     }, {
-        Tip = RoactTemplate.wrapped(Tip, {
+        Tip = w(Tip, {
             ref = props.info.ref,
             description = props.info.description or "",
             theme = props.info.theme,
-            opened = props.info.tip.opened,
-            update = props.info.tip.update,
+            location = props.info.location,
         }),
 
         TextBox = {

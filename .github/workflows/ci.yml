@@ -25,25 +25,38 @@ jobs:
           crate: wally-package-types
           version: "^1"
 
-      - name: Download defintion files & packages
+      - name: Download definition files & packages
         shell: bash
         run: |
           wally install
+          cd definitions
           curl -O https://raw.githubusercontent.com/JohnnyMorganz/luau-lsp/main/scripts/globalTypes.d.lua
           curl -O https://gist.githubusercontent.com/zxibs/81fc195db5e0e374c63b98c262b99e1d/raw/utils.d.lua
           curl -O https://gist.githubusercontent.com/zxibs/1b861e0123ae548f282b106818202afd/raw/roact.d.lua
+          curl -O https://gist.githubusercontent.com/zxibs/5cecb2a1bc36591145b9675cca99aee3/raw/roactRouter.d.lua
           curl -O https://gist.githubusercontent.com/zxibs/92756cffe2f8ee8fe801218cb2f88931/raw/unc.d.lua
+          cd ..
+
+      - name: Push new definition files
+        shell: bash
+        run: |
+          git config --global user.name 'github-actions'
+          git config --global user.email 'github-actions@users.noreply.github.com'
+          git add definitions/ || echo 'No changes to add'
+          git commit -m --amend --reset-author "Installed definitions" || echo 'No changes to commit'
+          git push || echo 'No changes to push'
 
       - name: Analyze
         shell: bash
         run: |
-          rojo sourcemap dev.project.json --output sourcemap.json
+          rojo sourcemap default.project.json --output sourcemap.json
           wally-package-types --sourcemap sourcemap.json Packages/
           luau-lsp analyze --no-strict-dm-types --ignore=Packages/** --base-luaurc=.luaurc --sourcemap=sourcemap.json \
-            --definitions=globalTypes.d.lua \
-            --definitions=utils.d.lua \
-            --definitions=roact.d.lua \
-            --definitions=unc.d.lua \
-            --definitions=loaded.d.lua \
+            --definitions=definitions/globalTypes.d.lua \
+            --definitions=definitions/utils.d.lua \
+            --definitions=definitions/roact.d.lua \
+            --definitions=definitions/roactRouter.d.lua \
+            --definitions=definitions/unc.d.lua \
+            --definitions=definitions/loaded.d.lua \
             src/
         

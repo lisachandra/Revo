@@ -3,10 +3,12 @@ local Roact: Roact = require(script.Parent.Parent.Roact) :: any
 local Templates = require(script.Parent.Templates)
 local Types = require(script.Parent.Types)
 
+local e = Roact.createElement
+
 type props = { info: Types.info }
 
 local function Label(props: props)
-    return Roact.createElement(Templates.Label, {
+    return e(Templates.Label, {
         BackgroundColor3 = props.info.theme.schemeColor,
         LayoutOrder = props.info.order,
     }, {
