@@ -60,18 +60,18 @@ local function Window(props: props, hooks: RoactHooks.Hooks) print("Window")
     end, {})
 
     local pages, tabs = {}, {}; for pageName, page in pairs(props[Roact.Children]) do
-        pageLocations[pageName] = pageLocations[pageName] or `/{HttpService:GenerateGUID()}`
+        pageLocations.value[pageName] = pageLocations.value[pageName] or `/{HttpService:GenerateGUID()}`
 
         table.insert(pages, e(Page, {
             ref = ref.value,
             theme = props.theme,
-            location = pageLocations[pageName],
+            location = pageLocations.value[pageName],
         }, page.props[Roact.Children]))
 
         table.insert(tabs, e(Tab, {
             name = pageName,
             theme = props.theme,
-            location = pageLocations[pageName],
+            location = pageLocations.value[pageName],
         }))
     end
 
