@@ -16,6 +16,8 @@ local Blur = require(script.Parent.Blur)
 local Page = require(script.Parent.Page)
 local Tab = require(script.Parent.Tab)
 
+local merge = require(script.Parent.merge)
+
 local e = Roact.createElement
 local w = RoactTemplate.wrapped
 
@@ -123,13 +125,11 @@ local function Window(props: props, hooks: RoactHooks.Hooks)
             },
     
             Pages = {
-                [Roact.Children] = {
+                [Roact.Children] = merge(pages, {
                     Blur = w(Blur, {
                         theme = props.theme,
                     }),
-    
-                    Pages = { [Roact.Children] = pages },
-                },
+                }),
             },
         }),
     })
