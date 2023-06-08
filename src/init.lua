@@ -6,7 +6,7 @@ if not getfenv(1).__packager then
     Packager("evaera", "roblox-lua-promise", "v4.0.0", "lib", { "Promise" })()
     local Roact: Roact = Packager("Roblox", "roact", "v1.4.4", "src", { "Roact", "React" })()
     Packager("Kampfkarren", "roact-hooks", "main", "src", { "RoactHooks" })()
-    Packager("reselim", "roact-router", "master", "src", { "RoactRouter" })()
+    Packager("zxibs", "roact-router", "master", "src", { "RoactRouter" })()
     Packager("chriscerie", "roact-spring", "v1.1.5", "src", { "RoactSpring" })()
 
 	Roact.setGlobalConfig({
