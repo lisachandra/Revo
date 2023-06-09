@@ -33,7 +33,7 @@ local function Page(props: internal, hooks: RoactHooks.Hooks)
             local elements = {}; for elementName, element in pairs((props :: any)[Roact.Children]) do
                 print(elementName)
 
-                elementLocations.value[elementName] = elementLocations.value[elementName] or `/{HttpService:GenerateGUID()}_tip`
+                elementLocations.value[elementName] = elementLocations.value[elementName] or `/{HttpService:GenerateGUID(false)}_tip`
                 element.props = merge(element.props, {
                     info = merge(element.props.info, {
                         name = elementName,
