@@ -42,12 +42,9 @@ local function Tip(props: props & internal, hooks: RoactHooks.Hooks)
         
             hooks.useEffect(function()
                 api.start({
-                    position = if history.value.location.path:find(props.location) then
-                        UDim2.fromScale(0, 0)
-                    else
-                        UDim2.fromScale(0, 2)
+                    position = history.value.location.path:find(props.location) and UDim2.fromScale(0, 0) or UDim2.fromScale(0, 2)
                 })
-            end, {})
+            end, { history.value.location.path })
         
             return f({
                 Button = e(props.template, {
