@@ -65,7 +65,7 @@ local function Window(props: props, hooks: RoactHooks.Hooks)
 
         table.insert(pages, e(Page, {
             location = pageLocations.value[pageName]
-        }))
+        }, page.props[Roact.Children]))
 
         table.insert(tabs, e(Tab, {
             name = pageName,
