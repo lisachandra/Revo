@@ -26,7 +26,7 @@ local function Page(props: internal, hooks: RoactHooks.Hooks)
                 return e("Frame", { Visible = false })
             end
 
-            local history = hooks.useValue(RoactRouter.useHistory(hooks))
+            local history = RoactRouter.useHistory(hooks)
 
             local elementLocations = hooks.useValue({} :: Dictionary<string>)
         
@@ -43,7 +43,7 @@ local function Page(props: internal, hooks: RoactHooks.Hooks)
             end
         
             return e(Templates.Page, {
-                Visible = history.value.location.path:find(props.location) and true or false,
+                Visible = history.location.path:find(props.location) and true or false,
                 ScrollBarImageColor3 = Color3.fromRGB(
                     (window.theme.schemeColor.R * 255) - 16,
                     (window.theme.schemeColor.G * 255) - 15,
