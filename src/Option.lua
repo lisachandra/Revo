@@ -12,7 +12,6 @@ local e = Roact.createElement
 local w = RoactTemplate.wrapped
 
 type props = {
-    theme: Types.theme,
     option: string,
     order: number,
     selected: RoactBinding<string>,
@@ -24,63 +23,66 @@ type styles = {
 }
 
 local function Option(props: props, hooks: RoactHooks.Hooks)
-    local ref = hooks.useValue(Roact.createRef() :: RoactRef<TextButton>)
+    return e(Types.WindowContext.Consumer, {
+        render = function(window)
+            local ref = hooks.useValue(Roact.createRef() :: RoactRef<GuiButton>)
 
-    local styles: any, api = RoactSpring.useSpring(hooks, function()
-        return {
-            background = props.selected:getValue() == props.option and props.theme.schemeColor or props.theme.elementColor,
-            config = RoactSpring.config.stiff :: any,
-        }
-    end)
+            local styles: any, api = RoactSpring.useSpring(hooks, function()
+                return {
+                    background = props.selected:getValue() == props.option and window.theme.schemeColor or window.theme.elementColor,
+                    config = RoactSpring.config.stiff :: any,
+                }
+            end)
 
-    local styles: styles = styles
+            local styles: styles = styles
 
-    return e(Templates.Option, {
-        [Roact.Ref] = ref.value :: any,
+            return e(Templates.Option, {
+                [Roact.Ref] = ref.value :: any,
 
-        TextColor3 = Color3.fromRGB(
-            (props.theme.textColor.R * 255) - 6, 
-            (props.theme.textColor.G * 255) - 6, 
-            (props.theme.textColor.B * 255) - 6
-        ),
-
-        LayoutOrder = props.selected:map(function(value)
-            api.start({
-                background = value == props.option and props.theme.schemeColor or props.theme.elementColor,  
-            })
-
-            return props.order
-        end),
-
-        Text = `  {props.option}`,
-        BackgroundColor3 = styles.background,
-
-        [Roact.Event.MouseButton1Click] = function(_self: TextButton)
-            props.select(props.option)
-        end,
-
-        [Roact.Event.MouseEnter] = function(_self: TextButton)
-            local color = props.selected:getValue() == props.option and props.theme.schemeColor or props.theme.elementColor
-
-            api.start({
-                background = Color3.fromRGB(
-                    (color.R * 255) + 8,
-                    (color.G * 255) + 9,
-                    (color.B * 255) + 10
+                TextColor3 = Color3.fromRGB(
+                    (window.theme.textColor.R * 255) - 6, 
+                    (window.theme.textColor.G * 255) - 6, 
+                    (window.theme.textColor.B * 255) - 6
                 ),
-           }) 
-        end,
 
-        [Roact.Event.MouseLeave] = function(_self: TextButton)
-            api.start({
-                background = props.selected:getValue() == props.option and props.theme.schemeColor or props.theme.elementColor,
-            }) 
+                LayoutOrder = props.selected:map(function(value)
+                    api.start({
+                        background = value == props.option and window.theme.schemeColor or window.theme.elementColor,  
+                    })
+
+                    return props.order
+                end),
+
+                Text = `  {props.option}`,
+                BackgroundColor3 = styles.background,
+
+                [Roact.Event.MouseButton1Click] = function(_self: TextButton)
+                    props.select(props.option)
+                end,
+
+                [Roact.Event.MouseEnter] = function(_self: TextButton)
+                    local color = props.selected:getValue() == props.option and window.theme.schemeColor or window.theme.elementColor
+
+                    api.start({
+                        background = Color3.fromRGB(
+                            (color.R * 255) + 8,
+                            (color.G * 255) + 9,
+                            (color.B * 255) + 10
+                        ),
+                }) 
+                end,
+
+                [Roact.Event.MouseLeave] = function(_self: TextButton)
+                    api.start({
+                        background = props.selected:getValue() == props.option and window.theme.schemeColor or window.theme.elementColor,
+                    }) 
+                end,
+            }, {
+                Ripple = w(Ripple, {
+                    ref = ref.value,
+                }),
+            })
         end,
-    }, {
-        Ripple = w(Ripple, {
-            ref = ref.value :: any,
-            theme = props.theme,
-        }),
     })
 end
 

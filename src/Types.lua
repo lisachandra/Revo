@@ -1,15 +1,15 @@
-type updateBinding<T> = (value: T) -> ()
+local Roact: Roact = require(script.Parent.Parent.Roact) :: any
 
-export type info = {
+export type Mainframe = Frame & { Side: Frame & { Tabs: Frame }, Pages: Frame, Tips: Frame }
+
+export type Info = {
     description: string?,
     name: string,
     order: number,
-    theme: theme,
-    ref: RoactRef<Frame & { Tips: Frame }>,
     location: string,
 }
 
-export type theme = {
+export type Theme = {
     schemeColor: Color3,
     background: Color3,
     header: Color3,
@@ -17,6 +17,13 @@ export type theme = {
     elementColor: Color3,
 }
 
-export type Mainframe = Frame & { Side: Frame & { Tabs: Frame }, Pages: Frame, Tips: Frame }
+export type elementProps<T> = {
+    info: Info,
+    initialValue: T,
 
-return {}
+    update: (value: T) -> (),
+}
+
+return {
+    WindowContext = Roact.createContext((nil :: any) :: { theme: Theme, ref: RoactRef<Mainframe> })
+}

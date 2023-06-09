@@ -80,4 +80,4 @@ return table.freeze({
         textColor = Color3.fromRGB(255,255,255),
         elementColor = Color3.fromRGB(22, 29, 31)
     },
-}) :: { [string]: Types.theme }
+}) :: { [string]: Types.Theme }

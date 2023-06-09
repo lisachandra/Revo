@@ -8,10 +8,7 @@ local Types = require(script.Parent.Types)
 
 local e = Roact.createElement
 
-type props = {}
-
 type internal = {
-    theme: Types.theme,
     name: string,
     location: string,
 }
@@ -20,36 +17,44 @@ type styles = {
     sideTransparency: RoactBinding<number>,
 }
 
-local function Tab(props: props & internal, hooks: RoactHooks.Hooks)
-    local history = hooks.useValue(RoactRouter.useHistory(hooks))
+local function Tab(props: internal, hooks: RoactHooks.Hooks)
+    return e(Types.WindowContext.Consumer, {
+        render = function(window)
+            local history = hooks.useValue(RoactRouter.useHistory(hooks))
 
-    local styles: any, api = RoactSpring.useSpring(hooks, function()
-        return {
-            sideTransparency = 1,
-            config = RoactSpring.config.stiff :: any,
-        }
-    end)
+            local styles: any, api = RoactSpring.useSpring(hooks, function()
+                return {
+                    sideTransparency = 1,
+                    config = RoactSpring.config.stiff :: any,
+                }
+            end)
 
-    local styles: styles = styles
+            local styles: styles = styles
 
-    hooks.useEffect(function()
-        api.start({
-            sideTransparency = history.value.location.path:find(props.location) and 0 or 1
-        })
-    end, {})
+            hooks.useEffect(function()
+                if history.value.location.path:find(props.location) then
+                    api.start({
+                        sideTransparency = 0,
+                    })
+                end
+            end, {})
 
-    return e(Templates.Tab, {
-        BackgroundColor3 = props.theme.schemeColor,
-        TextColor3 = props.theme.textColor,
-        BackgroundTransparency = styles.sideTransparency,
-        Text = props.name,
+            return e(Templates.Tab, {
+                BackgroundColor3 = window.theme.schemeColor,
+                TextColor3 = window.theme.textColor,
+                BackgroundTransparency = styles.sideTransparency,
+                Text = props.name,
 
-        [Roact.Event.MouseButton1Click] = function()
-            if not history.value.location.path:find(props.location) then
-                history.value:replace(props.location)
-            end
+                [Roact.Event.MouseButton1Click] = function(_self: GuiButton)
+                    if not history.value.location.path:find(props.location) then
+                        api.start({
+                            sideTransparency = 1,
+                        })
+                    end
+                end,
+            })
         end,
     })
 end
 
-return (RoactHooks.new(Roact :: any)(Tab) :: any) :: RoactElementFn<props & internal>
+return (RoactHooks.new(Roact :: any)(Tab) :: any) :: RoactElementFn<internal>

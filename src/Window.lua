@@ -24,7 +24,7 @@ local w = RoactTemplate.wrapped
 type props = {
     visible: boolean,
     title: string,
-    theme: Types.theme,
+    theme: Types.Theme,
     close: () -> (),
 }
 
@@ -64,74 +64,78 @@ local function Window(props: props, hooks: RoactHooks.Hooks)
         pageLocations.value[pageName] = pageLocations.value[pageName] or `/{HttpService:GenerateGUID()}`
 
         table.insert(pages, e(Page, {
-            ref = ref.value,
-            theme = props.theme,
-            location = pageLocations.value[pageName],
-        }, page.props[Roact.Children]))
+            location = pageLocations.value[pageName]
+        }))
 
         table.insert(tabs, e(Tab, {
             name = pageName,
-            theme = props.theme,
             location = pageLocations.value[pageName],
         }))
     end
 
-    return e(RoactRouter.Router, {}, {
-        Window = e(Templates.Window, {
-            [Roact.Ref] = ref.value,
-    
-            Visible = props.visible,
-            BackgroundColor3 = props.theme.background,
-            Position = styles.position,
-        }, {
-            Header = {
-                BackgroundColor3 = props.theme.header,
-    
-                [Roact.Children] = {
-                    Title = { Text = props.title },
-                    Coverup = { BackgroundColor3 = props.theme.header },
-                    Close = {
-                        [Roact.Event.MouseButton1Click] = props.close,
-                    },
-                } :: any,
-    
-                [Roact.Event.InputBegan] = function(_self: Frame, input: InputObject)
-                    if input.UserInputType == Enum.UserInputType.MouseButton1 and not dragConnection.value then
-                        dragConnection.value = RunService.Heartbeat:Connect(function()
-                            local mousePos = UserInputService:GetMouseLocation() - Vector2.new(0, GuiService:GetGuiInset().Y)
-    
-                            api.start({
-                                position = UDim2.fromOffset(mousePos.X, mousePos.Y),
-                            })
-                        end)
-                    end
-                end,
-    
-                [Roact.Event.InputEnded] = function(_self: Frame, input: InputObject)
-                    if input.UserInputType == Enum.UserInputType.MouseButton1 and dragConnection.value then
-                        dragConnection.value:Disconnect()
-                        dragConnection.value = nil
-                    end
-                end,
-            },
-    
-            Side = {
-                BackgroundColor3 = props.theme.header,
-    
-                [Roact.Children] = {
-                    Coverup = { BackgroundColor3 = props.theme.header },
-                    Tabs = { [Roact.Children] = tabs },
+    return e(Types.WindowContext.Provider, {
+        value = {
+            theme = props.theme,
+            ref = ref.value,
+        },
+    }, {
+        Router = e(RoactRouter.Router, {}, {
+            Window = e(Templates.Window, {
+                [Roact.Ref] = ref.value :: any,
+        
+                Visible = props.visible,
+                BackgroundColor3 = props.theme.background,
+                Position = styles.position,
+            }, {
+                Header = {
+                    BackgroundColor3 = props.theme.header,
+        
+                    [Roact.Children] = {
+                        Title = { Text = props.title },
+                        Coverup = { BackgroundColor3 = props.theme.header },
+                        Close = {
+                            [Roact.Event.MouseButton1Click] = props.close,
+                        },
+                    } :: any,
+        
+                    [Roact.Event.InputBegan] = function(_self: Frame, input: InputObject)
+                        if input.UserInputType == Enum.UserInputType.MouseButton1 and not dragConnection.value then
+                            dragConnection.value = RunService.Heartbeat:Connect(function()
+                                local mousePos = UserInputService:GetMouseLocation() - Vector2.new(0, GuiService:GetGuiInset().Y)
+        
+                                api.start({
+                                    position = UDim2.fromOffset(mousePos.X, mousePos.Y),
+                                })
+                            end)
+                        end
+                    end,
+        
+                    [Roact.Event.InputEnded] = function(_self: Frame, input: InputObject)
+                        if input.UserInputType == Enum.UserInputType.MouseButton1 and dragConnection.value then
+                            dragConnection.value:Disconnect()
+                            dragConnection.value = nil
+                        end
+                    end,
                 },
-            },
-    
-            Pages = {
-                [Roact.Children] = merge(pages, {
-                    Blur = w(Blur, {
-                        theme = props.theme,
+        
+                Side = {
+                    BackgroundColor3 = props.theme.header,
+        
+                    [Roact.Children] = {
+                        Coverup = { BackgroundColor3 = props.theme.header },
+                        Tabs = { [Roact.Children] = tabs },
+                    },
+                },
+        
+                Pages = {
+                    [Roact.Children] = merge(pages, {
+                        Blur = w(Blur, {
+                            theme = props.theme,
+                        }),
                     }),
-                }),
-            },
-        }),
+                },
+            }),
+        })
     })
 end
 

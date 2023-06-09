@@ -5,17 +5,21 @@ local Types = require(script.Parent.Types)
 
 local e = Roact.createElement
 
-type props = { info: Types.info }
+type props = { info: Types.Info }
 
 local function Label(props: props)
-    return e(Templates.Label, {
-        BackgroundColor3 = props.info.theme.schemeColor,
-        LayoutOrder = props.info.order,
-    }, {
-        Name = {
-            TextColor3 = props.info.theme.textColor,
-            Text = props.info.description,
-        },
+    return e(Types.WindowContext.Consumer, {
+        render = function(window)
+            return e(Templates.Label, {
+                BackgroundColor3 = window.theme.schemeColor,
+                LayoutOrder = props.info.order,
+            }, {
+                Name = {
+                    TextColor3 = window.theme.textColor,
+                    Text = props.info.description,
+                },
+            })
+        end,
     })
 end
 

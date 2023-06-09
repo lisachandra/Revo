@@ -3,13 +3,7 @@ local RoactHooks = require(script.Parent.Parent.RoactHooks)
 local RoactSpring = require(script.Parent.Parent.RoactSpring)
 local RoactRouter: RoactRouter = require(script.Parent.Parent.RoactRouter) :: any
 
-local Types = require(script.Parent.Types)
-
 local e = Roact.createElement
-
-type props = {
-    theme: Types.theme,
-}
 
 type internal = {
     template: RoactElement,
@@ -19,7 +13,7 @@ type styles = {
     transparency: RoactBinding<number>,
 }
 
-local function Blur(props: props & internal, hooks: RoactHooks.Hooks)
+local function Blur(props: internal, hooks: RoactHooks.Hooks)
     local history = hooks.useValue(RoactRouter.useHistory(hooks))
 
     local styles: any, api = RoactSpring.useSpring(hooks, function()
@@ -58,4 +52,4 @@ local function Blur(props: props & internal, hooks: RoactHooks.Hooks)
     })
 end
 
-return (RoactHooks.new(Roact :: any)(Blur) :: any) :: RoactElementFn<props>
+return (RoactHooks.new(Roact :: any)(Blur) :: any) :: RoactElementFn<internal>

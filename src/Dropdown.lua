@@ -15,12 +15,8 @@ local merge = require(script.Parent.merge)
 local e = Roact.createElement
 local w = RoactTemplate.wrapped
 
-type props = {
-    info: Types.info,
-    initialValue: string?,
-
+type props = Types.elementProps<string> & {
     options: { string },
-    update: (value: string) -> (),
 }
 
 type styles = {
@@ -29,98 +25,102 @@ type styles = {
 }
 
 local function Dropdown(props: props, hooks: RoactHooks.Hooks)
-    local ref = hooks.useValue(Roact.createRef())
-    local opened = hooks.useValue(false)
+    return e(Types.WindowContext.Consumer, {
+        render = function(window)
+            local ref = hooks.useValue(Roact.createRef())
+            local opened = hooks.useValue(false)
 
-    local selected: RoactBinding<string>, updateSelected = hooks.useBinding(props.initialValue or props.info.name)
+            local selected: RoactBinding<string>, updateSelected = hooks.useBinding(props.initialValue or props.info.name)
 
-    local styles: any, api = RoactSpring.useSpring(hooks, function()
-        return {
-            canvasSize = UDim2.fromOffset(352, 33),
-            background = props.info.theme.elementColor,
-            config = RoactSpring.config.stiff :: any,
-        }
-    end)
+            local styles: any, api = RoactSpring.useSpring(hooks, function()
+                return {
+                    canvasSize = UDim2.fromOffset(352, 33),
+                    background = window.theme.elementColor,
+                    config = RoactSpring.config.stiff :: any,
+                }
+            end)
 
-    local styles: styles = styles
+            local styles: styles = styles
 
-    hooks.useEffect(function()
-        if props.initialValue then
-            updateSelected(props.initialValue)
-        end
-    end, { props.initialValue })
+            hooks.useEffect(function()
+                if props.initialValue then
+                    updateSelected(props.initialValue)
+                end
+            end, { props.initialValue })
 
-    local options = {}; for index, option in ipairs(props.options) do
-        table.insert(options, e(Option, {
-            theme = props.info.theme,
-            option = option,
-            order = index,
-            selected = selected,
-            select = updateSelected,
-        }))
-    end
+            local options = {}; for index, option in ipairs(props.options) do
+                table.insert(options, e(Option, {
+                    theme = window.theme,
+                    option = option,
+                    order = index,
+                    selected = selected,
+                    select = updateSelected,
+                }))
+            end
 
-    return e(Templates.Dropdown, {
-        LayoutOrder = props.info.order,
-        Size = styles.canvasSize,
-    }, merge(options, {
-        Open = {
-            [Roact.Ref] = ref.value :: any,
+            return e(Templates.Dropdown, {
+                LayoutOrder = props.info.order,
+                Size = styles.canvasSize,
+            }, merge(options, {
+                Open = {
+                    [Roact.Ref] = ref.value :: any,
+                    
+                    BackgroundColor3 = styles.background,
+
+                    [Roact.Event.MouseButton1Click] = function(self: Frame & { Parent: Frame & { UIListLayout: UIListLayout } })
+                        local absoluteContentSize = self.Parent.UIListLayout.AbsoluteContentSize
+
+                        opened.value = not opened.value
+
+                        api.start({
+                            canvasSize = UDim2.fromOffset(352, opened.value and absoluteContentSize.Y or 33)
+                        })
+                    end,
+                    
+                    [Roact.Event.MouseEnter] = function(_self: Frame)
+                        api.start({
+                            background = Color3.fromRGB(
+                                (window.theme.elementColor.R * 255) + 8,
+                                (window.theme.elementColor.G * 255) + 9,
+                                (window.theme.elementColor.B * 255) + 10
+                            ),
+                        }) 
+                    end,
             
-            BackgroundColor3 = styles.background,
+                    [Roact.Event.MouseLeave] = function(_self: Frame)
+                        api.start({
+                            background = window.theme.elementColor,
+                        }) 
+                    end,
 
-            [Roact.Event.MouseButton1Click] = function(self: Frame & { Parent: Frame & { UIListLayout: UIListLayout } })
-                local absoluteContentSize = self.Parent.UIListLayout.AbsoluteContentSize
+                    [Roact.Children] = {
+                        Ripple = w(Ripple, {
+                            ref = ref.value,
+                            theme = window.theme,
+                        }),
+                
+                        Tip = w(Tip, {
+                            ref = window.ref,
+                            description = props.info.description or "",
+                            theme = window.theme,
+                            location = props.info.location,
+                        }),
 
-                opened.value = not opened.value
+                        Selected = {
+                            TextColor3 = window.theme.textColor,
+                            Text = selected:map(function(value)
+                                props.update(value)
 
-                api.start({
-                    canvasSize = UDim2.fromOffset(352, opened.value and absoluteContentSize.Y or 33)
-                })
-            end,
-            
-            [Roact.Event.MouseEnter] = function(_self: Frame)
-                api.start({
-                    background = Color3.fromRGB(
-                        (props.info.theme.elementColor.R * 255) + 8,
-                        (props.info.theme.elementColor.G * 255) + 9,
-                        (props.info.theme.elementColor.B * 255) + 10
-                    ),
-                }) 
-            end,
-    
-            [Roact.Event.MouseLeave] = function(_self: Frame)
-                api.start({
-                    background = props.info.theme.elementColor,
-                }) 
-            end,
+                                return value
+                            end),
+                        },
 
-            [Roact.Children] = {
-                Ripple = w(Ripple, {
-                    ref = ref.value,
-                    theme = props.info.theme,
-                }),
-        
-                Tip = w(Tip, {
-                    ref = props.info.ref,
-                    description = props.info.description or "",
-                    theme = props.info.theme,
-                    location = props.info.location,
-                }),
-
-                Selected = {
-                    TextColor3 = props.info.theme.textColor,
-                    Text = selected:map(function(value)
-                        props.update(value)
-
-                        return value
-                    end),
+                        Icon = { ImageColor3 = window.theme.schemeColor },
+                    },
                 },
-
-                Icon = { ImageColor3 = props.info.theme.schemeColor },
-            },
-        },
-    }))
+            }))
+        end,
+    })
 end
 
 return (RoactHooks.new(Roact :: any)(Dropdown) :: any) :: RoactElementFn<props>

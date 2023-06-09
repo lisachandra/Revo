@@ -13,8 +13,7 @@ local e = Roact.createElement
 local w = RoactTemplate.wrapped
 
 type props = {
-    info: Types.info,
-
+    info: Types.Info,
     pressed: () -> (),
 }
 
@@ -23,59 +22,60 @@ type styles = {
 }
 
 local function Button(props: props, hooks: RoactHooks.Hooks)
-    local ref = hooks.useValue(Roact.createRef())
+    return e(Types.WindowContext.Consumer, {
+        render = function(window)
+            local ref = hooks.useValue(Roact.createRef())
 
-    local styles: any, api = RoactSpring.useSpring(hooks, function()
-        return {
-            background = props.info.theme.elementColor,
-            config = RoactSpring.config.stiff :: any,
-        }
-    end)
+            local styles: any, api = RoactSpring.useSpring(hooks, function()
+                return {
+                    background = window.theme.elementColor,
+                    config = RoactSpring.config.stiff :: any,
+                }
+            end)
 
-    local styles: styles = styles
+            local styles: styles = styles
 
-    return e(Templates.Button, {
-        [Roact.Ref] = ref.value :: any,
+            return e(Templates.Button, {
+                [Roact.Ref] = ref.value :: any,
 
-        BackgroundColor3 = styles.background,
-        LayoutOrder = props.info.order,
+                BackgroundColor3 = styles.background,
+                LayoutOrder = props.info.order,
 
-        [Roact.Event.MouseButton1Click] = props.pressed,
+                [Roact.Event.MouseButton1Click] = props.pressed,
 
-        [Roact.Event.MouseEnter] = function(_self: TextButton)
-           api.start({
-                background = Color3.fromRGB(
-                    (props.info.theme.elementColor.R * 255) + 8,
-                    (props.info.theme.elementColor.G * 255) + 9,
-                    (props.info.theme.elementColor.B * 255) + 10
-                ),
-           }) 
+                [Roact.Event.MouseEnter] = function(_self: TextButton)
+                api.start({
+                        background = Color3.fromRGB(
+                            (window.theme.elementColor.R * 255) + 8,
+                            (window.theme.elementColor.G * 255) + 9,
+                            (window.theme.elementColor.B * 255) + 10
+                        ),
+                }) 
+                end,
+
+                [Roact.Event.MouseLeave] = function(_self: TextButton)
+                    api.start({
+                        background = window.theme.elementColor,
+                    }) 
+                end,
+            }, {
+                Ripple = w(Ripple, {
+                    ref = ref.value,
+                }),
+
+                Tip = w(Tip, {
+                    description = props.info.description or "",
+                    location = props.info.location,
+                }),
+
+                Name = {
+                    TextColor3 = window.theme.textColor,
+                    Text = props.info.name,
+                },
+
+                Icon = { ImageColor3 = window.theme.schemeColor },
+            })
         end,
-
-        [Roact.Event.MouseLeave] = function(_self: TextButton)
-            api.start({
-                background = props.info.theme.elementColor,
-            }) 
-        end,
-    }, {
-        Ripple = w(Ripple, {
-            ref = ref.value,
-            theme = props.info.theme,
-        }),
-
-        Tip = w(Tip, {
-            ref = props.info.ref,
-            description = props.info.description or "",
-            theme = props.info.theme,
-            location = props.info.location,
-        }),
-
-        Name = {
-            TextColor3 = props.info.theme.textColor,
-            Text = props.info.name,
-        },
-
-        Icon = { ImageColor3 = props.info.theme.schemeColor },
     })
 end
 

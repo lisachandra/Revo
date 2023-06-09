@@ -1,5 +1,4 @@
 local GuiService = cloneref(game:GetService("GuiService"))
-local HttpService = cloneref(game:GetService("HttpService"))
 local UserInputService = cloneref(game:GetService("UserInputService"))
 
 local Roact: Roact = require(script.Parent.Parent.Roact) :: any
@@ -13,7 +12,6 @@ local f = Roact.createFragment
 
 type props = {
     ref: RoactRef<GuiButton>,
-    theme: Types.theme,
 }
 
 type internal = {
@@ -34,7 +32,7 @@ local function Ripple(props: props & internal, hooks: RoactHooks.Hooks)
         
         local _, render = hooks.useState(nil :: any)
         local sizeTarget = hooks.useValue(nil :: number?)
-        local ripples = hooks.useValue({})
+        local ripples = hooks.useValue({} :: Array<RoactElement>)
 
         hooks.useEffect(function()
             if button then
@@ -46,18 +44,16 @@ local function Ripple(props: props & internal, hooks: RoactHooks.Hooks)
                 )
 
                 local connection; connection = button.MouseButton1Click:Connect(function()
-                    local key = HttpService:GenerateGUID()
-                    local element; element = e(Ripple :: any, {
+                    local ripple; ripple = e(Ripple :: any, {
                         size = sizeTarget.value,
                         template = props.template,
-                        theme = props.theme,
     
-                        finished = function()
-                            ripples.value[key] = nil
+                        finished = function(_self: GuiButton)
+                            table.remove(ripples.value, table.find(ripples.value, ripple))
                         end,
                     })
     
-                    ripples.value[key] = element
+                    table.insert(ripples.value, ripple)
                     render()
                 end)
     
@@ -84,39 +80,43 @@ local function Ripple(props: props & internal, hooks: RoactHooks.Hooks)
         end, {})
 
         if self.value:getValue() then
-            local styles: any, api = RoactSpring.useSpring(hooks, function()
-                local position = mousePosition.value - self.value:getValue().AbsolutePosition
-
-                return {
-                    transparency = 0.6,
-                    position = UDim2.fromOffset(position.X, position.Y),
-                    size = UDim2.new(),
-
-                    config = RoactSpring.config.stiff :: any,
-                }
-            end)
-
-            local styles: styles = styles
-
-            hooks.useEffect(function()
-                api.start({
-                    transparency = 1,
-                    position = UDim2.new(0.5, -(props.size / 2), 0.5, -(props.size / 2)),
-                    size = UDim2.fromOffset(props.size, props.size),
-                }):andThen(props.finished)
-            end, {})
-            
-            return e(props.template, {
-                [Roact.Ref] = self.value,
-
-                ImageColor3 = props.theme.schemeColor,
-                ImageTransparency = styles.transparency,
-                Position = styles.position,
-                Size = styles.size,
+            return e(Types.WindowContext.Consumer, {
+                render = function(window)
+                    local styles: any, api = RoactSpring.useSpring(hooks, function()
+                        local position = mousePosition.value - self.value:getValue().AbsolutePosition
+        
+                        return {
+                            transparency = 0.6,
+                            position = UDim2.fromOffset(position.X, position.Y),
+                            size = UDim2.new(),
+        
+                            config = RoactSpring.config.stiff :: any,
+                        }
+                    end)
+        
+                    local styles: styles = styles
+        
+                    hooks.useEffect(function()
+                        api.start({
+                            transparency = 1,
+                            position = UDim2.new(0.5, -(props.size / 2), 0.5, -(props.size / 2)),
+                            size = UDim2.fromOffset(props.size, props.size),
+                        }):andThen(props.finished)
+                    end, {})
+                    
+                    return e(props.template, {
+                        [Roact.Ref] = self.value,
+        
+                        ImageColor3 = window.theme.schemeColor,
+                        ImageTransparency = styles.transparency,
+                        Position = styles.position,
+                        Size = styles.size,
+                    }) 
+                end,
             })
         else
             return e(props.template, {
-                [Roact.Ref] = self.value
+                [Roact.Ref] = self.value,
             })
         end
     end

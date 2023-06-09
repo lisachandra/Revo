@@ -78,11 +78,16 @@ type Themes = typeof({
         textColor = Color3.fromRGB(255,255,255),
         elementColor = Color3.fromRGB(22, 29, 31)
     },
-} :: { [string]: theme })
+} :: { [string]: Theme })
 
-type updateBinding<T> = (value: T) -> ()
+type elementProps<T> = {
+    info: Info,
+    initialValue: T,
 
-type theme = {
+    update: (value: T) -> (),
+}
+
+type Theme = {
     schemeColor: Color3,
     background: Color3,
     header: Color3,
@@ -90,7 +95,7 @@ type theme = {
     elementColor: Color3,
 }
 
-type info = {
+type Info = {
     description: string?,
     order: number,
 }
@@ -98,53 +103,22 @@ type info = {
 type Window = RoactElementFn<{
     visible: boolean,
     title: string,
-    theme: theme,
+    theme: Theme,
 }>
 
-type Label = RoactElementFn<{ info: info }>
+type Label = RoactElementFn<{ info: Info }>
 type Page = RoactElementFn<{}>
 
-type Toggle = RoactElementFn<{
-    info: info,
-    initialValue: boolean,
-
-    update: updateBinding<boolean>,
-}>
-
 type Button = RoactElementFn<{
-    info: info,
-
+    info: Info,
     pressed: () -> (),
 }>
 
-type Keybind = RoactElementFn<{
-    info: info,
-    initialValue: Enum.KeyCode | Enum.UserInputType,
-
-    update: updateBinding<Enum.KeyCode | Enum.UserInputType>,
-}>
-
-type TextBox = RoactElementFn<{
-    info: info,
-    initialValue: string,
-
-    update: updateBinding<string>,
-}>
-
-type Dropdown = RoactElementFn<{
-    info: info,
-    initialValue: string?,
-
-    options: { string },
-    update: updateBinding<string>,
-}>
-
-type ColorPicker = RoactElementFn<{
-    info: info,
-    initialValue: Color3,
-
-    update: updateBinding<Color3>,
-}>
+type Toggle = RoactElementFn<elementProps<boolean>>
+type Keybind = RoactElementFn<elementProps<Enum.KeyCode | Enum.UserInputType>>
+type TextBox = RoactElementFn<elementProps<string>>
+type Dropdown = RoactElementFn<elementProps<string> & { options: Array<string> }>
+type ColorPicker = RoactElementFn<elementProps<Color3>>
 
 export type Revo = {
     Themes: Themes,
