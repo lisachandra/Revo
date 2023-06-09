@@ -34,8 +34,6 @@ type styles = {
 
 local function Window(props: props, hooks: RoactHooks.Hooks)
     local _, render = hooks.useState(nil)
-
-    local history = hooks.useValue(RoactRouter.History.new())
     
     local ref = hooks.useValue(Roact.createRef() :: RoactRef<Types.Mainframe>)
     local dragConnection = hooks.useValue(nil :: RBXScriptConnection?)
@@ -81,7 +79,7 @@ local function Window(props: props, hooks: RoactHooks.Hooks)
             ref = ref.value,
         },
     }, {
-        Router = e(RoactRouter.Router, { history = history.value }, {
+        Router = e(RoactRouter.Router, {}, {
             Window = e(Templates.Window, {
                 [Roact.Ref] = ref.value :: any,
         

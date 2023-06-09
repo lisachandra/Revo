@@ -41,6 +41,8 @@ local function Page(props: internal, hooks: RoactHooks.Hooks)
                     } :: Types.Info),
                 })
             end
+
+            print("rerendering page", history.location.path, history.location.path:find(props.location))
         
             return e(Templates.Page, {
                 Visible = history.location.path:find(props.location) and true or false,

@@ -91,6 +91,6 @@ export type RoactRouter = {
     useParams: (hooks: Hooks) -> PathMatchResults,
     useRouteMatch: (hooks: Hooks, options: PathMatchOptions & { path: string }) -> PathMatchResults,
 
-    History: { new: (intialEntries: Array<string>, intialIndex: number) -> History },
-    Path: { new: (pattern: string) -> Path },
+    History: { new: (intialEntries: Array<string>?, intialIndex: number?) -> History },
+    Path: { new: (pattern: string?) -> Path },
 }
