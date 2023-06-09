@@ -41,11 +41,9 @@ local function Page(props: internal, hooks: RoactHooks.Hooks)
                     } :: Types.Info),
                 })
             end
-
-            print("rerendering page", history.location.path, history.location.path:find(props.location))
         
             return e(Templates.Page, {
-                Visible = history.location.path:find(props.location) and true or false,
+                Visible = (history.location.path == props.location or history.location.path:find(props.location)) and true or false,
                 ScrollBarImageColor3 = Color3.fromRGB(
                     (window.theme.schemeColor.R * 255) - 16,
                     (window.theme.schemeColor.G * 255) - 15,
