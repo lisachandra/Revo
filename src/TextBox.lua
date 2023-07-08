@@ -49,7 +49,7 @@ local function TextBox(props: props, hooks: RoactHooks.Hooks)
                             (window.theme.elementColor.G * 255) + 9,
                             (window.theme.elementColor.B * 255) + 10
                         ),
-                }) 
+                    }) 
                 end,
 
                 [Roact.Event.MouseLeave] = function(_self: TextButton)

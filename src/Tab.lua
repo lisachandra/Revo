@@ -48,7 +48,7 @@ local function Tab(props: internal, hooks: RoactHooks.Hooks)
                 [Roact.Event.MouseButton1Click] = function(_self: GuiButton)
                     local sideTransparency = styles.sideTransparency:getValue()
 
-                    history:replace(if sideTransparency >= 1 then props.location else "/")
+                    history:replace(if sideTransparency < 0.5 then props.location else "/")
                 end,
             })
         end,
