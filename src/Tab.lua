@@ -32,8 +32,10 @@ local function Tab(props: internal, hooks: RoactHooks.Hooks)
             local styles: styles = styles
 
             hooks.useEffect(function()
+                local visible = history.location.path == props.location or history.location.path:find(props.location)
+
                 api.start({
-                    sideTransparency = (history.location.path == props.location or history.location.path:find(props.location)) and 0 or 1,
+                    sideTransparency = if visible then 0 else 1,
                 })
             end, { history.location.path })
 
