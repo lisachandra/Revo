@@ -79,46 +79,46 @@ local function Ripple(props: props & internal, hooks: RoactHooks.Hooks)
             render()
         end, {})
 
-        if self.value:getValue() then
-            return e(Types.WindowContext.Consumer, {
-                render = function(window)
-                    local styles: any, api = RoactSpring.useSpring(hooks, function()
-                        local position = mousePosition.value - self.value:getValue().AbsolutePosition
-        
-                        return {
-                            transparency = 0.6,
-                            position = UDim2.fromOffset(position.X, position.Y),
-                            size = UDim2.new(),
-        
-                            config = RoactSpring.config.stiff :: any,
-                        }
-                    end)
-        
-                    local styles: styles = styles
-        
-                    hooks.useEffect(function()
-                        api.start({
-                            transparency = 1,
-                            position = UDim2.new(0.5, -(props.size / 2), 0.5, -(props.size / 2)),
-                            size = UDim2.fromOffset(props.size, props.size),
-                        }):andThen(props.finished)
-                    end, {})
-                    
+        return e(Types.WindowContext.Consumer, {
+            render = function(window)
+                if not self.value:getValue() then
                     return e(props.template, {
                         [Roact.Ref] = self.value,
-        
-                        ImageColor3 = window.theme.schemeColor,
-                        ImageTransparency = styles.transparency,
-                        Position = styles.position,
-                        Size = styles.size,
-                    }) 
-                end,
-            })
-        else
-            return e(props.template, {
-                [Roact.Ref] = self.value,
-            })
-        end
+                    })
+                end
+
+                local styles: any, api = RoactSpring.useSpring(hooks, function()
+                    local position = mousePosition.value - self.value:getValue().AbsolutePosition
+    
+                    return {
+                        transparency = 0.6,
+                        position = UDim2.fromOffset(position.X, position.Y),
+                        size = UDim2.new(),
+    
+                        config = RoactSpring.config.stiff :: any,
+                    }
+                end)
+    
+                local styles: styles = styles
+    
+                hooks.useEffect(function()
+                    api.start({
+                        transparency = 1,
+                        position = UDim2.new(0.5, -(props.size / 2), 0.5, -(props.size / 2)),
+                        size = UDim2.fromOffset(props.size, props.size),
+                    }):andThen(props.finished)
+                end, {})
+                
+                return e(props.template, {
+                    [Roact.Ref] = self.value,
+    
+                    ImageColor3 = window.theme.schemeColor,
+                    ImageTransparency = styles.transparency,
+                    Position = styles.position,
+                    Size = styles.size,
+                }) 
+            end,
+        })
     end
 end
 
