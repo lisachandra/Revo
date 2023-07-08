@@ -41,9 +41,12 @@ local function Page(props: internal, hooks: RoactHooks.Hooks)
                     } :: Types.Info),
                 })
             end
+
+            local visible = history.location.path == props.location or history.location.path:find(props.location)
+            print(visible)
         
             return e(Templates.Page, {
-                Visible = (history.location.path == props.location or history.location.path:find(props.location)) and true or false,
+                Visible = if visible then true else false,
                 ScrollBarImageColor3 = Color3.fromRGB(
                     (window.theme.schemeColor.R * 255) - 16,
                     (window.theme.schemeColor.G * 255) - 15,
