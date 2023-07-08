@@ -41,8 +41,12 @@ local function Tip(props: props & internal, hooks: RoactHooks.Hooks)
             local styles: styles = styles
         
             hooks.useEffect(function()
+                local visible = history.location.path == props.location or history.location.path:find(props.location)
+
                 api.start({
-                    position = history.location.path:find(props.location) and UDim2.fromScale(0, 0) or UDim2.fromScale(0, 2)
+                    position = if visible then
+                        UDim2.fromScale(0, 0)
+                    else UDim2.fromScale(0, 2)
                 })
             end, { history.location.path })
         
