@@ -34,7 +34,7 @@ local function Tab(props: internal, hooks: RoactHooks.Hooks)
             hooks.useEffect(function()
                 local connection; connection = history.onChanged:connect(function(path)
                     local visible = path == props.location or path:find(props.location)
-                    print(path, visible)
+                    print(props.location, path, visible)
 
                     api.start({
                         sideTransparency = if visible then 0 else 1,
@@ -56,7 +56,7 @@ local function Tab(props: internal, hooks: RoactHooks.Hooks)
                 [Roact.Event.MouseButton1Click] = function(_self: GuiButton)
                     local sideTransparency = styles.sideTransparency:getValue()
 
-                    history:replace(if sideTransparency == 1 then props.location else "/")
+                    history:push(if sideTransparency == 1 then props.location else "/")
                 end,
             })
         end,

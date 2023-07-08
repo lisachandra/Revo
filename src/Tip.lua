@@ -62,7 +62,7 @@ local function Tip(props: props & internal, hooks: RoactHooks.Hooks)
                     ImageColor3 = window.theme.schemeColor,
         
                     [Roact.Event.MouseButton1Click] = function(_self: GuiButton)
-                        history:push(props.location)
+                        history:push(history.location.path .. props.location)
                     end,
                 }),
         
