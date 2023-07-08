@@ -33,7 +33,7 @@ local function Tab(props: internal, hooks: RoactHooks.Hooks)
 
             hooks.useEffect(function()
                 api.start({
-                    sideTransparency = (history.location.path == props.location or history.location.path:find(props.location)) and 0 or true,
+                    sideTransparency = (history.location.path == props.location or history.location.path:find(props.location)) and 0 or 1,
                 })
             end, { history.location.path })
 
