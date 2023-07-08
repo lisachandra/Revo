@@ -32,12 +32,19 @@ local function Tab(props: internal, hooks: RoactHooks.Hooks)
             local styles: styles = styles
 
             hooks.useEffect(function()
-                local visible = history.location.path == props.location or history.location.path:find(props.location)
+                local connection; connection = history.onChanged:connect(function(path)
+                    local visible = history.location.path == props.location or history.location.path:find(props.location)
 
-                api.start({
-                    sideTransparency = if visible then 0 else 1,
-                })
-            end, { history.location.path })
+                    api.start({
+                        sideTransparency = if visible then 0 else 1,
+                    })
+                end)
+        
+                return function()
+                    connection:disconnect()
+                    connection = nil :: any
+                end
+            end, {})
 
             return e(Templates.Tab, {
                 BackgroundColor3 = window.theme.schemeColor,

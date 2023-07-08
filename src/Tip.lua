@@ -41,14 +41,21 @@ local function Tip(props: props & internal, hooks: RoactHooks.Hooks)
             local styles: styles = styles
         
             hooks.useEffect(function()
-                local visible = history.location.path == props.location or history.location.path:find(props.location)
+                local connection; connection = history.onChanged:connect(function(path)
+                    local visible = history.location.path == props.location or history.location.path:find(props.location)
 
-                api.start({
-                    position = if visible then
-                        UDim2.fromScale(0, 0)
-                    else UDim2.fromScale(0, 2)
-                })
-            end, { history.location.path })
+                    api.start({
+                        position = if visible then
+                            UDim2.fromScale(0, 0)
+                        else UDim2.fromScale(0, 2)
+                    })
+                end)
+        
+                return function()
+                    connection:disconnect()
+                    connection = nil :: any
+                end
+            end, {})
         
             return f({
                 Button = e(props.template, {
