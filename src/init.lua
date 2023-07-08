@@ -13,7 +13,7 @@ if not getfenv(1).__packager then
 		elementTracing = true,
 	})
 
-    return Packager("zxibs", "Revo", "main", "src")()
+    return Packager("zxibs", "Revo", "develop", "src")()
 end
 
 return table.freeze({

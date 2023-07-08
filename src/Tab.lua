@@ -32,10 +32,19 @@ local function Tab(props: internal, hooks: RoactHooks.Hooks)
             local styles: styles = styles
 
             hooks.useEffect(function()
-                api.start({
-                    sideTransparency = (history.location.path == props.location or history.location.path:find(props.location)) and 0 or true,
-                })
-            end, { history.location.path })
+                local connection; connection = history.onChanged:connect(function(path)
+                    local visible = path:find(props.location, 1, true)
+
+                    api.start({
+                        sideTransparency = if visible then 0 else 1,
+                    })
+                end)
+        
+                return function()
+                    connection:disconnect()
+                    connection = nil :: any
+                end
+            end, {})
 
             return e(Templates.Tab, {
                 BackgroundColor3 = window.theme.schemeColor,
@@ -44,7 +53,9 @@ local function Tab(props: internal, hooks: RoactHooks.Hooks)
                 Text = props.name,
 
                 [Roact.Event.MouseButton1Click] = function(_self: GuiButton)
-                    history:push(props.location)
+                    local sideTransparency = styles.sideTransparency:getValue()
+
+                    history:push(if sideTransparency == 1 then props.location else "/")
                 end,
             })
         end,

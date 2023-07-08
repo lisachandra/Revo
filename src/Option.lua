@@ -69,7 +69,7 @@ local function Option(props: props, hooks: RoactHooks.Hooks)
                             (color.G * 255) + 9,
                             (color.B * 255) + 10
                         ),
-                }) 
+                    }) 
                 end,
 
                 [Roact.Event.MouseLeave] = function(_self: TextButton)

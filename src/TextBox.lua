@@ -43,13 +43,13 @@ local function TextBox(props: props, hooks: RoactHooks.Hooks)
                 LayoutOrder = props.info.order,
 
                 [Roact.Event.MouseEnter] = function(_self: TextButton)
-                api.start({
+                    api.start({
                         background = Color3.fromRGB(
                             (window.theme.elementColor.R * 255) + 8,
                             (window.theme.elementColor.G * 255) + 9,
                             (window.theme.elementColor.B * 255) + 10
                         ),
-                }) 
+                    }) 
                 end,
 
                 [Roact.Event.MouseLeave] = function(_self: TextButton)

@@ -28,7 +28,7 @@ local function Blur(props: internal, hooks: RoactHooks.Hooks)
     hooks.useEffect(function()
         local connection; connection = history.onChanged:connect(function(path)
             api.start({
-                transparency = path:find("_tip") and 0.5 or 1
+                transparency = path:find("_tip", 1, true) and 0.5 or 1
             })
         end)
 
@@ -41,11 +41,11 @@ local function Blur(props: internal, hooks: RoactHooks.Hooks)
     return e(props.template, {
         BackgroundTransparency = styles.transparency,
         Visible = styles.transparency:map(function(value)
-            return value <= 1 and true or false
+            return if value < 1 then true else false
         end),
 
         [Roact.Event.MouseButton1Click] = function()
-            if history.location.path:find("_tip") then
+            if history.location.path:find("_tip", 1, true) then
                 history:goBack()
             end
         end,
