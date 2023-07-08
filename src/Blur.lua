@@ -41,7 +41,7 @@ local function Blur(props: internal, hooks: RoactHooks.Hooks)
     return e(props.template, {
         BackgroundTransparency = styles.transparency,
         Visible = styles.transparency:map(function(value)
-            return if value < 0.5 then true else false
+            return if value == 1 then true else false
         end),
 
         [Roact.Event.MouseButton1Click] = function()
