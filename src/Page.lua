@@ -40,7 +40,7 @@ local function Page(props: internal, hooks: RoactHooks.Hooks)
                 })
             end
 
-            local visible = history.location.path == props.location or history.location.path:find(props.location)
+            local visible = history.location.path:find(props.location, 1, true)
         
             return e(Templates.Page, {
                 Visible = if visible then true else false,

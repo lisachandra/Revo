@@ -33,8 +33,7 @@ local function Tab(props: internal, hooks: RoactHooks.Hooks)
 
             hooks.useEffect(function()
                 local connection; connection = history.onChanged:connect(function(path)
-                    local visible = path == props.location or path:find(props.location)
-                    print(props.location, path, visible)
+                    local visible = path:find(props.location, 1, true)
 
                     api.start({
                         sideTransparency = if visible then 0 else 1,

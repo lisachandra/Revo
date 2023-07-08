@@ -42,7 +42,7 @@ local function Tip(props: props & internal, hooks: RoactHooks.Hooks)
         
             hooks.useEffect(function()
                 local connection; connection = history.onChanged:connect(function(path)
-                    local visible = path == props.location or path:find(props.location)
+                    local visible = path:find(props.location, 1, true)
 
                     api.start({
                         position = if visible then
