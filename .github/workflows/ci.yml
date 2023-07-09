@@ -36,12 +36,6 @@ jobs:
           curl -O https://gist.githubusercontent.com/zxibs/5cecb2a1bc36591145b9675cca99aee3/raw/roactRouter.d.lua
           curl -O https://gist.githubusercontent.com/zxibs/92756cffe2f8ee8fe801218cb2f88931/raw/unc.d.lua
           cd ..
-      
-      - name: Fix wally package types
-        shell: bash
-        run: |
-          rojo sourcemap dev.project.json --output sourcemap.json
-          wally-package-types --sourcemap sourcemap.json Packages/
 
       - name: Push new definition files
         shell: bash
@@ -55,7 +49,10 @@ jobs:
       - name: Analyze
         shell: bash
         run: |
-          luau-lsp analyze --no-strict-dm-types --ignore=Packages/** --base-luaurc=.luaurc --sourcemap=sourcemap.json \
+          rojo sourcemap dev.project.json --output sourcemap.json
+          wally-package-types --sourcemap sourcemap.json Packages/
+          luau-lsp analyze --no-strict-dm-types src/ \
+            --ignore=Packages/** --base-luaurc=.luaurc --sourcemap=sourcemap.json \
             --flag:LuauTypeInferIterationLimit=0 \
             --flag:LuauCheckRecursionLimit=0 \
             --flag:LuauTypeInferRecursionLimit=0 \
