@@ -65,6 +65,5 @@ jobs:
             --definitions=definitions/roact.d.lua \
             --definitions=definitions/roactRouter.d.lua \
             --definitions=definitions/unc.d.lua \
-            --definitions=definitions/loaded.d.lua \
-            src/
+            --definitions=definitions/loaded.d.lua
         
