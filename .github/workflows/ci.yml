@@ -36,6 +36,10 @@ jobs:
           curl -O https://gist.githubusercontent.com/zxibs/5cecb2a1bc36591145b9675cca99aee3/raw/roactRouter.d.lua
           curl -O https://gist.githubusercontent.com/zxibs/92756cffe2f8ee8fe801218cb2f88931/raw/unc.d.lua
           cd ..
+      
+      - name: Fix wally package types
+        shell: bash
+        run: |
           rojo sourcemap dev.project.json --output sourcemap.json
           wally-package-types --sourcemap sourcemap.json Packages/
 
