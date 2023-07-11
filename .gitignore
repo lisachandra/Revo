@@ -2,7 +2,7 @@
 # Created by https://www.toptal.com/developers/gitignore/api/lua,windows,visualstudiocode
 # Edit at https://www.toptal.com/developers/gitignore?templates=lua,windows,visualstudiocode
 
-Packages/*
+definitions/globalTypes.d.lua
 wally.lock
 aftman.toml
 sourcemap.json
